@@ -1,4 +1,4 @@
-package letsgu;
+package letsgu.event1;
 
 import java.io.IOException;
 
@@ -8,11 +8,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/aa")
-public class Aaaa extends HttpServlet{
+@WebServlet("/letsgu/event/commentdel")
+public class CommentDeleteServlet extends HttpServlet {
+
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
-		req.getRequestDispatcher("/WEB-INF/NewFile.jsp").forward(req, resp);
 	}
 }
