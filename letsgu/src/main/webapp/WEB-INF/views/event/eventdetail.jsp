@@ -52,7 +52,7 @@
 <hr>
 
 <!-- 수정 / 삭제 버튼 (작성자만 보이게) -->
-<c:if test="${loginId != null && loginId.user_id == event.authorId}">
+<c:if test="${LOGIN_ID != null && LOGIN_ID.userId == event.authorId}">
     <a href="${pageContext.request.contextPath}/letsgu/event/update?eventId=${event.eventId}">
         <button>수정</button>
     </a>
