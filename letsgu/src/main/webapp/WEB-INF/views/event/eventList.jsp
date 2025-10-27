@@ -1,6 +1,6 @@
-<%@page import="event.PageHandler"%>
-<%@page import="event.Category"%>
-<%@page import="event.Event"%>
+<%@page import="event1.PageHandler"%>
+<%@page import="event1.Category"%>
+<%@page import="event1.Event"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -9,19 +9,43 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>조회하기</title>
+<title>이벤트 목록</title>
 </head>
 <body>
+
+	<!-- 공통 header -->
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+
+	<!--content-->
+	
+	
+	
+	
+	
+	
+
+	<!-- 검색바 -->
+	<form action="${pageContext.request.contextPath}/letsgu/event/search"
+		method="get">
+		<input type="text" name="keyword" value="${keyword}"
+			placeholder="검색어를 입력하세요" required>
+		<button type="submit">검색</button>
+	</form>
 
 	<div>
 		<a href="${pageContext.request.contextPath}/letsgu/event/reg">게시글
 			등록</a>
 	</div>
 
+	<!--관리자 전용 버튼 -->
 	<div>
-		<a href="${pageContext.request.contextPath}/letsgu/admin/list">관리자 페이지</a>
+		<c:if test="${sessionScope.LOGIN_ID.rule == 'ADMIN' }">
+			<a href="${pageContext.request.contextPath}/letsgu/admin/list">관리자
+				페이지</a>
+		</c:if>
 	</div>
 
+	<!-- 지역 필터 -->
 	<div>
 		<h3>지역</h3>
 		<ul>
@@ -37,6 +61,7 @@
 		</ul>
 	</div>
 
+	<!-- 카테고리 필터 -->
 	<div>
 		<h3>카테고리</h3>
 		<ul>
@@ -54,12 +79,38 @@
 
 	<h2>
 		<c:choose>
-			<c:when test="${not empty param.category}">
-            ${eventList[0].categoryName} 카테고리 이벤트 목록
-        </c:when>
+			<c:when test="${not empty keyword}">
+				‘${keyword}’ 검색 결과
+			</c:when>
+			<c:when
+				test="${not empty param.region and param.region ne '전체' and not empty param.category}">
+      			${param.region} 지역의 
+      			<c:forEach var="category" items="${categoryList}">
+					<c:if test="${param.category == category.categoryId}">
+          				${category.categoryName}
+        				</c:if>
+				</c:forEach>
+      				관련 소식
+    		</c:when>
+
+			<c:when
+				test="${not empty param.region and param.region ne '전체' and empty param.category}">
+     				 ${param.region} 지역의 전체 이벤트
+    		</c:when>
+
+			<c:when
+				test="${empty param.region or param.region eq '전체'} and not empty param.category}">
+				<c:forEach var="category" items="${categoryList}">
+					<c:if test="${param.category == category.categoryId}">
+          					${category.categoryName}
+        			</c:if>
+				</c:forEach>
+      				관련 전체 소식
+    		</c:when>
+
 			<c:otherwise>
-            전체 이벤트 목록
-        </c:otherwise>
+      				전체 이벤트 목록
+    		</c:otherwise>
 		</c:choose>
 	</h2>
 
@@ -74,25 +125,35 @@
 			<th>사진</th>
 		</tr>
 
-		<c:forEach var="event" items="${eventList}">
-			<tr>
-				<td><a
-					href="${pageContext.request.contextPath}/letsgu/event/eventdetail?eventId=${event.eventId}">
-						${event.eventId} </a></td>
-				<td>${event.categoryName}</td>
-				<td>${event.title}</td>
-				<td>${event.region}</td>
-				<td>${event.eventDate}</td>
-				<td>${event.status}</td>
-				<td><c:if test="${not empty event.uploadImg}">
-						<img alt="이벤트 이미지"
-							src="${pageContext.request.contextPath}/upload/${event.uploadImg}"
-							width="100" height="80">
-					</c:if></td>
-			</tr>
-		</c:forEach>
+		<c:choose>
+			<c:when test="${empty eventList}">
+				<tr>
+					<td colspan="7" style="text-align: center;">검색 결과가 없습니다.</td>
+				</tr>
+			</c:when>
+			<c:otherwise>
+				<c:forEach var="event" items="${eventList}">
+					<tr>
+						<td><a
+							href="${pageContext.request.contextPath}/letsgu/event/eventdetail?eventId=${event.eventId}">
+								${event.eventId} </a></td>
+						<td>${event.categoryName}</td>
+						<td>${event.title}</td>
+						<td>${event.region}</td>
+						<td>${event.eventDate}</td>
+						<td>${event.status}</td>
+						<td><c:if test="${not empty event.uploadImg}">
+								<img alt="이벤트 이미지"
+									src="${pageContext.request.contextPath}/upload/${event.uploadImg}"
+									width="100" height="80">
+							</c:if></td>
+					</tr>
+				</c:forEach>
+			</c:otherwise>
+		</c:choose>
 	</table>
 
+	<!-- 페이징 -->
 	<div>
 		<c:if test="${empty param.category}">
 			<c:if test="${page.currentGrp > 1}">
@@ -112,6 +173,9 @@
 		</c:if>
 
 	</div>
+	
+	<!--공통 footer -->
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 </body>
 </html>
