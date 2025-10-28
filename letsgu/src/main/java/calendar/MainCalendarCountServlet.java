@@ -49,6 +49,7 @@ public class MainCalendarCountServlet extends HttpServlet {
         //결과 Map(key,value)
         Map<String, Integer> counts = new LinkedHashMap<>();
         
+        
         //3.JDBC 
         try {
             // 드라이버 로드

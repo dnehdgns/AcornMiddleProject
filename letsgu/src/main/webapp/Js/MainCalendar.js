@@ -29,9 +29,10 @@
     modal.className = 'mc-modal hidden';
     modal.innerHTML = `
       <div class="mc-modal-backdrop" data-close="true"></div>
+	  
       <div class="mc-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="mc-modal-title">
         <div class="mc-modal-header">
-          <h3 id="mc-modal-title">이벤트</h3>
+          <h3 id="mc-modal-title" class="mc-modal-title">이벤트</h3>
           <button type="button" class="mc-modal-close" data-close="true" aria-label="닫기">✕</button>
         </div>
         <div class="mc-modal-body" id="mc-modal-body"></div>
@@ -100,11 +101,17 @@
 		        <li class="mc-list-item ${statusClass}"">
 		          <a class="mc-link" href="${href}">
 		            <div class="mc-list-title">${title}</div>
-		            <div class="mc-list-sub"> ${eventDate}</div>
-		            <div class="mc-list-sub"> ${region}</div>
-		            <div class="mc-list-sub"> 모집 인원: ${capacity}명</div>
-		            <div class="mc-list-sub"> ${desc || '내용 없음'}</div>
-		            <div class="mc-list-sub"> ${status}</div>
+					<div class="mc-list-sub-1">
+		            	<div class="mc-list-sub"> ${eventDate}</div>
+		            	<div class="mc-list-sub"> ${region}</div>
+					</div>
+					<div class="mc-list-sub-2">
+						<div class="mc-list-sub"> ${desc || '내용 없음'}</div>
+					</div>
+					<div class="mc-list-sub-3">
+		            	<div class="mc-list-sub"> 모집 인원: ${capacity}명</div>
+		            	<div class="mc-list-sub status-label ${statusClass}"> ${status}</div>
+					</div>
 		          </a>
 		        </li>
 		      `;
@@ -119,7 +126,7 @@
       console.error('[openDayModal]', err);
       bodyHTML = `<p class="mc-error">이벤트를 불러오지 못했습니다.</p>`;
     }
-    openModal(`이벤트 (${dateStr})`, bodyHTML);
+    openModal(`${dateStr}  이벤트 `, bodyHTML);
   }
 
   // 날짜별 이벤트 카운트 
@@ -156,6 +163,10 @@
       badge.className = 'mc-day-count';
       badge.type = 'button';
       badge.textContent = count;
+	  
+	  const label = `${count} event${count === 1 ? '' : 's'}`;
+	  badge.textContent = label;
+	  
       badge.setAttribute('aria-label', `${dateStr} 일정 ${count}개`);
 	  
       badge.addEventListener('click', () => openDayModal(dateStr));
@@ -183,9 +194,19 @@
       initialView: 'dayGridMonth',
       height: '70vh',
       locale: cfg.locale || 'ko',
-      headerToolbar: { left: 'prev,next today', center: 'title', right: '' },
-      buttonText: { today: 'today' },
+      headerToolbar: { left: 'prev,next', center: 'title', right: 'today' },
+      buttonText: { today: 'Today' },
 
+	  googleCalendarApiKey: cfg.googleApiKey,
+	  
+	  eventSources: [
+	    {
+	      googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
+	      display: 'background',         
+	      className: 'gg-holiday-bg'     
+	    }
+	  ],
+	  
       // 날짜 클릭 모달 오픈
       dateClick(arg) {
         openDayModal(arg.dateStr); 

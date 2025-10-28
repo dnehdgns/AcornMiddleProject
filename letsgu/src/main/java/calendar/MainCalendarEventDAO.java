@@ -3,6 +3,8 @@ package calendar;
 import java.sql.*;
 import java.util.*;
 
+import event1.Event;
+
 //캘린더 DAO 
 public class MainCalendarEventDAO {
 

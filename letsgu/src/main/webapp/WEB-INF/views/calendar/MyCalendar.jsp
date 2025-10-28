@@ -10,17 +10,15 @@
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js" defer></script>
 
-  <!-- 스타일 -->
+  <!-- google calendar plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@5.8.0/main.global.min.js" defer></script>
+  
+  <!-- Calendar CSS -->
   <link href="<%=request.getContextPath()%>/Css/MainCalendar.css" rel="stylesheet"/>
   <link href="<%=request.getContextPath()%>/Css/MyCalendar.css" rel="stylesheet"/>
 
-  <style>
-    /* 상단 탭 */
-    .mc-tabs { max-width: 1000px; margin: 24px auto 0; display: flex; gap: 8px; }
-    .mc-tab { padding: 8px 14px; border:1px solid #ddd; border-radius: 20px; cursor:pointer; background:#f6f6f6; }
-    .mc-tab.active { background:#222; color:#fff; }
-  </style>
 </head>
+
 <body>
   <!-- 상단 탭: 참여 / 북마크 -->
   <div class="mc-tabs" id="mc-tabs">
@@ -28,21 +26,21 @@
     <button type="button" class="mc-tab" data-source="bookmark">북마크한 이벤트</button>
   </div>
 
+
+  <h1>Let's Gu  MY event calendar</h1>
   <div id="calendar"></div>
 
   <script>
     window.CALENDAR_CONFIG = {
-      // counts / list (마이 캘린더 전용 엔드포인트)
-      fetchCountsUrl: '<%=request.getContextPath()%>/letsgu/mypage/cal/count',
-      fetchDayEventsUrl: '<%=request.getContextPath()%>/letsgu/mypage/event/listByDate',
-      eventDetailUrl: '<%=request.getContextPath()%>/letsgu/event/eventdetail',
-      locale: 'ko',
 
-      // 참여 or 북마크
-      defaultSource: 'participation'
+    	    fetchCountsUrl: '<%=request.getContextPath()%>/letsgu/myCalendar/count',
+    	    fetchDayEventsUrl: '<%=request.getContextPath()%>/letsgu/myCalendar/list',
+    	    eventDetailUrl: '<%=request.getContextPath()%>/letsgu/event/eventdetail',
+     defaultType: 'bookmark',
+     locale: 'ko'
     };
   </script>
 
-  <script src="<%=request.getContextPath()%>/js/MyCalendar.js" defer></script>
+  <script src="<%=request.getContextPath()%>/Js/MyCalendar.js" defer></script>
 </body>
 </html>
