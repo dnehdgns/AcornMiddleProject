@@ -19,6 +19,11 @@ public class Event {
 	private String categoryName; // 카테고리 이름
 	private String authorName;
 
+	// 인기순 정렬용
+	private int likeCount; // 추천수
+	private int dislikeCount; // 비추천수
+	private int popularity; // 인기지수
+
 	public Event() {
 	}
 
@@ -35,7 +40,6 @@ public class Event {
 		this.description = description;
 		this.uploadImg = uploadImg;
 	}
-	
 
 	@Override
 	public String toString() {
@@ -147,6 +151,30 @@ public class Event {
 
 	public void setAuthorName(String authorName) {
 		this.authorName = authorName;
+	}
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+
+	public int getDislikeCount() {
+		return dislikeCount;
+	}
+
+	public void setDislikeCount(int dislikeCount) {
+		this.dislikeCount = dislikeCount;
+	}
+
+	public int getPopularity() {
+		return popularity;
+	}
+
+	public void setPopularity(int popularity) {
+		this.popularity = popularity;
 	}
 
 }

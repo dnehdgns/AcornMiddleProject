@@ -37,48 +37,75 @@ public class EventDAO {
 		}
 		return con;
 	}
-	
-	//키워드 검색 (이벤트 제목)
-	public List<Event> findEventByTitle(String keyword){
+
+	// 키워드 검색 (이벤트 제목)
+	public List<Event> findEventByTitle(String keyword) {
 		Connection con = dbcon();
-		
-		String sql = "SELECT e.*, c.category_name  "
-	               + "FROM event e  "
-	               + "JOIN category c ON e.category_id = c.category_id  "
-	               + "WHERE INSTR(e.title, ?) > 0  "
-	               + "ORDER BY e.created_at DESC ";
-		
+
+		String sql = "SELECT e.*, c.category_name  " + "FROM event e  "
+				+ "JOIN category c ON e.category_id = c.category_id  " + "WHERE INSTR(e.title, ?) > 0  "
+				+ "ORDER BY e.created_at DESC ";
+
 		List<Event> searchList = new ArrayList<Event>();
-		
+
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		
+
 		try {
 			pst = con.prepareStatement(sql);
 			pst.setString(1, keyword);
 			rs = pst.executeQuery();
-			
+
 			while (rs.next()) {
-	            Event event = new Event();
-	            event.setEventId(rs.getInt("event_id"));
-	            event.setAuthorId(rs.getInt("author_id"));
-	            event.setCategoryId(rs.getInt("category_id"));
-	            event.setTitle(rs.getString("title"));
-	            event.setRegion(rs.getString("region"));
-	            event.setEventDate(rs.getDate("event_date"));
-	            event.setCapacity(rs.getInt("capacity"));
-	            event.setDescription(rs.getString("description"));
-	            event.setStatus(rs.getString("status"));
-	            event.setCreatedAt(rs.getDate("created_at"));
-	            event.setUploadImg(rs.getString("upload_img"));
-	            searchList.add(event);
-	        }
-			
+				Event event = new Event();
+				event.setEventId(rs.getInt("event_id"));
+				event.setAuthorId(rs.getInt("author_id"));
+				event.setCategoryId(rs.getInt("category_id"));
+				event.setCategoryName(rs.getString("category_name"));
+				event.setTitle(rs.getString("title"));
+				event.setRegion(rs.getString("region"));
+				event.setEventDate(rs.getDate("event_date"));
+				event.setCapacity(rs.getInt("capacity"));
+				event.setDescription(rs.getString("description"));
+				event.setStatus(rs.getString("status"));
+				event.setCreatedAt(rs.getDate("created_at"));
+				event.setUploadImg(rs.getString("upload_img"));
+				searchList.add(event);
+			}
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return searchList;
+	}
+
+	// 지역 목록 조회
+	public List<String> findAllRegion() {
+
+		Connection con = dbcon();
+
+		String sql = "SELECT DISTINCT region " + "FROM event " + "WHERE region IS NOT NULL " + "ORDER BY region ";
+
+		List<String> regionList = new ArrayList<String>();
+
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+
+		try {
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+
+			while (rs.next()) {
+				String region = rs.getString("region");
+				regionList.add(region);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return regionList;
 	}
 
 	// 이벤트 조회 (전체 지역 + 전체 카테고리 - 페이징 포함)
@@ -273,34 +300,6 @@ public class EventDAO {
 		return regCatList;
 	}
 
-	// 지역 목록 조회
-	public List<String> findAllRegion() {
-
-		Connection con = dbcon();
-
-		String sql = "SELECT DISTINCT region " + "FROM event " + "WHERE region IS NOT NULL " + "ORDER BY region ";
-
-		List<String> regionList = new ArrayList<String>();
-
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-
-		try {
-			pst = con.prepareStatement(sql);
-			rs = pst.executeQuery();
-
-			while (rs.next()) {
-				String region = rs.getString("region");
-				regionList.add(region);
-			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return regionList;
-	}
-
 	// 총 레코드 수 조회(페이징 처리)
 	public int countAll() {
 		Connection con = dbcon();
@@ -466,7 +465,8 @@ public class EventDAO {
 
 		Connection con = dbcon();
 
-		String sql = "UPDATE event SET status = 'INACTIVE'" + "WHERE TRUNC(event_date) < TRUNC(SYSDATE) AND status = 'ACTIVE'";
+		String sql = "UPDATE event SET status = 'INACTIVE'"
+				+ "WHERE TRUNC(event_date) < TRUNC(SYSDATE) AND status = 'ACTIVE'";
 
 		PreparedStatement pst = null;
 
@@ -474,7 +474,7 @@ public class EventDAO {
 			pst = con.prepareStatement(sql);
 			int result = pst.executeUpdate();
 			System.out.println("[만료 이벤트 비활성화 처리] : " + result + "건 업데이트");
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -486,16 +486,9 @@ public class EventDAO {
 	public void updateDislikeEvent() {
 		Connection con = dbcon();
 
-		String sql = "UPDATE event "
-							+ "SET status = 'INACTIVE' "
-							+ "WHERE status = 'ACTIVE' "
-							+ "AND event_id IN ( "
-							+ "    SELECT event_id "
-							+ "    FROM like_info "
-							+ "    WHERE type = 'DISLIKE' "
-							+ "    GROUP BY event_id "
-							+ "    HAVING COUNT(*) >= 10 "
-							+ ")";
+		String sql = "UPDATE event " + "SET status = 'INACTIVE' " + "WHERE status = 'ACTIVE' " + "AND event_id IN ( "
+				+ "    SELECT event_id " + "    FROM like_info " + "    WHERE type = 'DISLIKE' "
+				+ "    GROUP BY event_id " + "    HAVING COUNT(*) >= 10 " + ")";
 
 		PreparedStatement pst = null;
 
@@ -509,7 +502,6 @@ public class EventDAO {
 			e.printStackTrace();
 		}
 	}
-	
 
 	// 비활성화된 이벤트 조회(관리자용)
 	public List<Event> findInactiveEventList() {
@@ -567,6 +559,54 @@ public class EventDAO {
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	// 인기순 정렬 이벤트 조회
+	public List<Event> findEventsByPopularity() {
+		Connection con = dbcon();
+
+		String sql = "SELECT * FROM ( "
+				+ " SELECT e.event_id, e.title, e.description, e.region, e.upload_img, e.created_at, c.category_name, "
+				+ " NVL(SUM(CASE WHEN l.type = 'LIKE' THEN 1 ELSE 0 END), 0) AS like_count, "
+				+ " NVL(SUM(CASE WHEN l.type = 'DISLIKE' THEN 1 ELSE 0 END), 0) AS dislike_count, "
+				+ " (NVL(SUM(CASE WHEN l.type = 'LIKE' THEN 1 ELSE 0 END), 0) "
+				+ "  - NVL(SUM(CASE WHEN l.type = 'DISLIKE' THEN 1 ELSE 0 END), 0)) AS popularity " + " FROM event e "
+				+ "  JOIN category c ON e.category_id = c.category_id "
+				+ " LEFT JOIN like_info l ON e.event_id = l.event_id " + " WHERE e.status = 'ACTIVE' "
+				+ " GROUP BY e.event_id, e.title, e.description, e.region, e.upload_img, e.created_at, c.category_name  "
+				+ " HAVING SUM(CASE WHEN l.type IS NOT NULL THEN 1 ELSE 0 END) > 0 "
+				+ " ORDER BY popularity DESC, e.created_at DESC " + ") WHERE ROWNUM <= 5";
+
+		List<Event> sortList = new ArrayList<Event>();
+
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+
+		try {
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+
+			while (rs.next()) {
+				Event event = new Event();
+				event.setEventId(rs.getInt("event_id"));
+				event.setTitle(rs.getString("title"));
+				event.setDescription(rs.getString("description"));
+				event.setRegion(rs.getString("region"));
+				event.setCreatedAt(rs.getDate("created_at"));
+				event.setUploadImg(rs.getString("upload_img"));
+				event.setCategoryName(rs.getString("category_name"));
+				event.setLikeCount(rs.getInt("like_count"));
+				event.setDislikeCount(rs.getInt("dislike_count"));
+				event.setPopularity(rs.getInt("popularity"));
+				sortList.add(event);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sortList;
+
 	}
 
 }
