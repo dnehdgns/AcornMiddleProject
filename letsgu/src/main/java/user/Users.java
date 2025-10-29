@@ -8,6 +8,7 @@ public class Users {
 	private String email;
 	private String gender;
 	private String agegroup;
+	private String uploadimg;
 	private String rule;
 
 	public Users() {
@@ -87,6 +88,13 @@ public class Users {
 
 	public void setRule(String rule) {
 	    this.rule = rule;
+	}
+	
+	public String getUploadimg() {
+		return uploadimg;
+	}
+	public void setUploadimg(String uploadimg) {
+		this.uploadimg = uploadimg;
 	}
 
 	@Override

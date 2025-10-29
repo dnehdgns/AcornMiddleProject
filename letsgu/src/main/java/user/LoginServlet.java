@@ -1,64 +1,73 @@
 package user;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 
 @WebServlet("/letsgu/login")
 public class LoginServlet extends HttpServlet {
 
-	// inti 초기화 함수 필드 생성
-	private LoginService service;
-	
-	@Override
-	public void init () throws ServletException {
-		this.service=  new LoginService(new UserDAO());
-	}
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    private LoginService service;
 
-		request.getRequestDispatcher("/WEB-INF/views/login/login.jsp").forward(request, response);
+    @Override
+    public void init() throws ServletException {
+        this.service = new LoginService(new UserDAO());
+    }
 
-	}
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/views/login/login.jsp").forward(request, response);
+    }
 
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		// 요청/응답 인코딩
-		request.setCharacterEncoding("UTF-8");
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
 
-		// 파라미터
-		String loginid = request.getParameter("login_id");
-		String pw = request.getParameter("password");
-		
-		System.out.println("입력값 확인 => ID: " + loginid + ", PW: " + pw);
+        // 폼 파라미터
+        String loginId = nvl(request.getParameter("login_id"), request.getParameter("LOGIN_ID"));
+        String pw      = nvl(request.getParameter("password"), request.getParameter("PASSWORD"));
 
-		// 서비스 호출
-		Users loginUser = service.login(loginid, pw);
+        if (isEmpty(loginId) || isEmpty(pw)) {
+            response.getWriter().println("<script>alert('아이디/비밀번호를 입력해 주세요.');history.back();</script>");
+            return;
+        }
 
-		if (loginUser != null) {
-			HttpSession session = request.getSession();
-			session.setAttribute("LOGIN_ID", loginUser); // 로그인 성공 시 세션 저장
-			//session.setMaxInactiveInterval(30 * 60);
-			response.sendRedirect(request.getContextPath() + "/letsgu/main");
-			
-		} else {
-//			request.setAttribute("error", "아이디 또는 비밀번호가 올바르지 않습니다.");
-			response.getWriter().println("<script>");
-            response.getWriter().println("alert('아이디 또는 비밀번호가 올바르지 않습니다.');");
-            response.getWriter().println("history.back();");
-            response.getWriter().println("</script>");
-//			request.getRequestDispatcher("/WEB-INF/views/login/signup.jsp").forward(request, response);
-		}
-	}
+        // DB 로그인 검증 (Users 반환)
+        Users user = service.login(loginId, pw);
+
+        if (user == null) {
+            response.getWriter().println("<script>alert('아이디 또는 비밀번호가 올바르지 않습니다.');history.back();</script>");
+            return;
+        }
+
+     // 로그인 성공 시 (user != null 일 때)
+        HttpSession old = request.getSession(false);
+        if (old != null) old.invalidate(); // 기존 세션 삭제
+
+        HttpSession session = request.getSession(true);
+
+        // 글쓰기 서블릿이 기대하는 형태로 맞춰줌
+        session.setAttribute("LOGIN_ID", user);  // Users 객체
+        session.setAttribute("USER_ID", user.getUserId());
+        session.setAttribute("RULE", user.getRule());
+        session.setMaxInactiveInterval(60 * 30); // 30분 유지
+
+        response.sendRedirect(request.getContextPath() + "/letsgu/main");
+    }
+
+    // 유틸
+    private String nvl(String a, String b) {
+        return (a != null && !a.isEmpty()) ? a : b;
+    }
+    private boolean isEmpty(String s) {
+        return s == null || s.trim().isEmpty();
+    }
 }
