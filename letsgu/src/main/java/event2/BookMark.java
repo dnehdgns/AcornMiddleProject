@@ -2,17 +2,14 @@ package event2;
 
 import java.util.Date;
 
-public class Like {
+public class BookMark {
 	int event_id;
 	int user_id;
-	String type;
 	Date date;
-	
-	public Like(int like_id, int event_id, int user_id, String type, Date date) {
+	public BookMark(int event_id, int user_id, Date date) {
 		super();
 		this.event_id = event_id;
 		this.user_id = user_id;
-		this.type = type;
 		this.date = date;
 	}
 	
@@ -28,18 +25,16 @@ public class Like {
 	public void setUser_id(int user_id) {
 		this.user_id = user_id;
 	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
 	public Date getDate() {
 		return date;
 	}
 	public void setDate(Date date) {
 		this.date = date;
 	}
+
+	@Override
+	public String toString() {
+		return "BookMark [event_id=" + event_id + ", user_id=" + user_id + ", date=" + date + "]";
+	}
+	
 }
-
-

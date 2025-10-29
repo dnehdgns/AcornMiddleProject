@@ -14,5 +14,16 @@ public class CommentDeleteServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
+		req.setCharacterEncoding("utf-8");
+		
+		int eventid = Integer.parseInt(req.getParameter("eventid"));
+		int commentId = Integer.parseInt(req.getParameter("commentid"));
+        
+        CommentService commentService = new CommentService();
+        int result = commentService.removeComment(commentId);
+        
+        if(result>0) {
+        	resp.sendRedirect(req.getContextPath() + "/letsgu/event/eventdetail?eventId=" + eventid);
+        }
 	}
 }

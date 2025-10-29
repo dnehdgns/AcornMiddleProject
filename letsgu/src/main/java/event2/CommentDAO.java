@@ -34,18 +34,19 @@ public class CommentDAO {
 	
 	public ArrayList<Comment> GetComment(int eventId){
 		Connection con = dbcon();
-		String sql = "select * from comments where event_id = ?";
+		String sql = "select * from comments where event_id = ? order by CREATED_AT DESC";
 		ArrayList<Comment> list = new ArrayList<>();
 		
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setInt(1, eventId);
 			ResultSet rs = pst.executeQuery();
 			
 			while(rs.next()) {
 				int comment_id = rs.getInt("COMMENT_ID");
 				int event_id = rs.getInt("EVENT_ID");
-				int user_id = rs.getInt("USER_ID");
-				String content = rs.getString("CONTENT"); 
+				String user_id = rs.getString("USER_ID");
+				String content = rs.getString("USER_TEXT"); 
 				Date create_time = rs.getDate("CREATED_AT");
 				
 				Comment comment = new Comment(comment_id,event_id,user_id,content,create_time);
@@ -61,14 +62,14 @@ public class CommentDAO {
 	
 	public int AddComment(Comment comment) {
 		Connection con = dbcon();
-		String sql = "insert into comments(EVENT_ID,USER_ID,CONTENT) values(?,?,?)";
+		String sql = "insert into comments(EVENT_ID,USER_ID,USER_TEXT) values(?,?,?)";
 		PreparedStatement pst = null;
 		int result = 0;
 		
 		try {
 			pst = con.prepareStatement(sql);
-			pst.setInt(1, comment.getEvent_id());
-			pst.setInt(2, comment.getUser_id());
+			pst.setInt(1, comment.getEventId());
+			pst.setString(2, comment.getUserId());
 			pst.setString(3, comment.getContent());
 			
 			result = pst.executeUpdate();
@@ -79,14 +80,14 @@ public class CommentDAO {
 		return result;
 	}
 	
-	public int DeleteComment(int userId) {
+	public int RemoveComment(int commentId) {
 		Connection con = dbcon();
 		int result = 0;
 		
-		String sql = "delete from comment where user_id = ?";
+		String sql = "delete from comments where comment_id = ?";
 		try {
 			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setInt(1, userId);
+			pst.setInt(1, commentId);
 			
 			result= pst.executeUpdate();
 		} catch (SQLException e) {

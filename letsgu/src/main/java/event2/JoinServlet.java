@@ -15,23 +15,10 @@ import com.google.gson.JsonParser;
 
 import user.Users;
 
-@WebServlet("/letsgu/event/bookmark")
-public class BookMarkServlet extends HttpServlet {
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	    resp.setContentType("text/plain");
-	    resp.getWriter().write("북마크 서블릿이 정상적으로 연결되었습니다.");
-	}
+@WebServlet("/letsgu/event/join")
+public class JoinServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 1. 로그인 사용자 확인
-//        HttpSession session = req.getSession();
-//        Users user = (Users) session.getAttribute("user");
-//        if (user == null) {
-//            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//            return;
-//        }
-        
 		Users user = getLoginUser(req);
 		req.setAttribute("loginUser", user);
 
@@ -42,18 +29,26 @@ public class BookMarkServlet extends HttpServlet {
         String action = json.get("action").getAsString();
 
         // 3. DAO 호출
-        BookMarkService bookService = new BookMarkService();
+        JoinService joinService = new JoinService();
         boolean success = false;
+        JsonObject result = new JsonObject();
+      
+        
         if ("add".equals(action)) {
-            success = bookService.insertBookMark(eventId,user.getUserId());
+            success = joinService.insertJoin(eventId,user.getUserId());
+            
         } else if ("remove".equals(action)) {
-            success = bookService.deleteBookMark(eventId,user.getUserId());
+            success = joinService.removeJoin(eventId,user.getUserId());
         }
+        
+        
+        int joinCnt = joinService.getJoinCount(eventId);
+        result.addProperty("success", success);
+        result.addProperty("joinCount", joinCnt); // ✅ 실시간 참여 인원 포함
 
         // 4. 응답 반환
-        resp.setContentType("application/json");
-        resp.getWriter().write("{\"success\":" + success + "}");
-
+        resp.setContentType("application/json;charset=utf-8");
+        resp.getWriter().write(result.toString()); // ✅ 여기만 바꾸면 돼요!
 	}
 	
 	private Users getLoginUser(HttpServletRequest req) {

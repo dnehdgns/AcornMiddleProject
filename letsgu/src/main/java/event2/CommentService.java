@@ -6,15 +6,20 @@ public class CommentService {
 	
 	CommentDAO dao = new CommentDAO();
 
-	public boolean AddComment(int userId, int eventId, String content) {
-		return false;
+	public int insertComment(Comment comment) {
+		int result = dao.AddComment(comment);
+		return result;
 	}
 	
-	public boolean DeleteComment(int commentId, int userId) {
-		return false;
+	public int removeComment(int commentId) {
+		int result = dao.RemoveComment(commentId);
+		return result;
 	}
 	
 	public ArrayList<Comment>GetComment(int eventId){
-		return null;
+		ArrayList<Comment> list = new ArrayList<Comment>();
+		list = dao.GetComment(eventId);
+		
+		return list;
 	}
 }
