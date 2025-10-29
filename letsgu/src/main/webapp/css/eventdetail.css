@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 .main-title {
-	display: flex;          
+	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
@@ -11,7 +11,7 @@
 	padding: 2rem 0;
 	border-bottom: 0.1rem solid var(--gray-300);
 }
-
+/*검색바*/
 .search-bar form {
 	display: flex;
 	align-items: center;
@@ -40,9 +40,14 @@
 /*이벤트 상세 영역*/
 .event-detail-section {
 	display: flex;
-	gap: 12rem;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 6rem;
 	padding: 4rem 0;
 	border-bottom: 0.1rem solid var(--gray-300);
+	max-width: 900px; /* 상세 본문 영역의 최대 너비 */
+	margin: 0 auto; /* 이 max-width 블록 자체를 화면 가운데 */
+	width: 100%;
 }
 
 .detail-thumb {
@@ -64,7 +69,7 @@
 	object-fit: cover;
 	border-radius: 1rem;
 }
-
+/*이미지 없을 때*/
 .no-img {
 	width: 100%;
 	height: 100%;
@@ -75,7 +80,7 @@
 	color: var(--gray-500);
 	font-size: 1.4rem;
 }
-
+/*상세 정보*/
 .detail-info {
 	flex: 1;
 	display: flex;
@@ -97,44 +102,111 @@
 	gap: 0.6rem 1.2rem;
 }
 
+/* 모집 정보 */
 .detail-recruit {
-	background-color: var(--gray-100);
-	padding: 1rem 1.2rem;
-	border-radius: 0.8rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+	background-color: #fff9f4; 
+	border : 0.1rem solid #ffe0b2;
+	padding: 1.2rem 1.6rem;
+	border-radius: 1rem;
+	box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.05);
+	border: 0.1rem solid #ffe0b2;
 }
+
 .detail-recruit p {
+	font-size: 1.45rem;
 	color: var(--text-main);
-	font-size: 1.5rem;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+/* 아이콘 디자인 */
+.detail-recruit p::before {
+	font-family: "Material Symbols Outlined";
+	font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+	color: var(--main-orange);
+	font-size: 1.8rem;
+	line-height: 1;
+}
+
+.detail-recruit p:first-child::before {
+	content: "event"; 
+}
+
+.detail-recruit p:last-child::before {
+	content: "group";
 }
 
 .detail-description {
 	background: #fff;
 	padding: 1.6rem;
 	border-radius: 1rem;
-	box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.05);
+	box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.08);
 	line-height: 1.6;
 	font-size: 1.5rem;
 	color: var(--text-main);
 }
 
-.detail-actions {
-	display: flex;
-	flex-direction: column;
-	gap: 1.6rem;
-	margin-top: 1rem;
-}
-
+/*추천, 비추천, 북마크*/
 .like-section {
 	display: flex;
-	gap: 1rem;
-	align-items: center;
+	justify-content: left;
+	gap: 2.4rem;
+	margin: 3rem 0;
 }
 
-.like-btn, .dislike-btn {
+/* 공통 버튼 스타일 */
+.icon-btn, .like-btn, .dislike-btn, .bookmark-btn {
 	background: none;
 	border: none;
-	font-size: 1.8rem;
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-size: 1.6rem;
 	cursor: pointer;
+	color: var(--gray-600);
+	transition: all 0.2s ease;
+}
+
+.icon-btn:hover, .like-btn:hover, .dislike-btn:hover, .bookmark-btn:hover
+	{
+	color: var(--main-orange);
+}
+
+/* 아이콘 기본 스타일 */
+.material-symbols-outlined {
+	font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+	font-size: 2.2rem;
+	vertical-align: middle;
+}
+
+/* 숫자 */
+.like-count, .dislike-count {
+	font-size: 1.4rem;
+	color: var(--text-main);
+}
+
+/* 활성화 시(토글 버튼) */
+.like-btn.active .material-symbols-outlined,
+.dislike-btn.active .material-symbols-outlined,
+.bookmark-btn.active .material-symbols-outlined {
+	font-variation-settings: 
+		'FILL' 1,
+		'wght' 500,
+		'GRAD' 0,
+		'opsz' 24;
+	color: var(--main-orange);
+	transform: scale(1.15);
+}
+
+.right-action-group {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 1rem;
 }
 
 .participate {
@@ -187,22 +259,32 @@
 
 .delete-btn:hover {
 	background-color: #e22f2f;
-	color : #fff
+	color: #fff
 }
 
 /*댓글 css*/
 .comment-section {
 	margin-top: 4rem;
 	padding-top: 2rem;
-	border-top: 0.1rem solid var(--gray-300);
 	width: 100%;
+	max-width: 900px;   
+	margin : 0 auto;
 }
+
+.comment-title {
+	font-size: 1.8rem;
+	font-weight: 700;
+	margin-bottom: 1.5rem;
+	text-align: left;
+}
+
 .comment-form {
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
 	margin-bottom: 2rem;
 }
+/*댓글 작성*/
 .comment-input {
 	width: 100%;
 	min-height: 6rem;
@@ -212,6 +294,7 @@
 	font-size: 1.4rem;
 	resize: vertical;
 }
+/*댓글 등록버튼*/
 .comment-submit-btn {
 	align-self: flex-end;
 	padding: 0.8rem 1.4rem;
@@ -224,18 +307,94 @@
 	transition: background 0.2s;
 }
 
+.comment-login-required {
+	font-size: 1.4rem;
+	color: var(--gray-600);
+	text-align: center;
+	margin-bottom: 2rem;
+}
+
+/*댓글 리스트 css*/
+.comment-list {
+	display: flex;
+	flex-direction: column;
+	gap: 1.6rem;
+}
+
+.comment-item {
+	background-color: #fff;
+	padding: 1.2rem 1.6rem;
+	border-radius: 1rem;
+	box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.05);
+	border: 0.1rem solid var(--gray-200);
+}
+
+.comment-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 1.4rem;
+	color: var(--gray-600);
+	margin-bottom: 0.6rem;
+}
+
+.comment-writer {
+	font-weight: 600;
+	color: var(--text-main);
+}
+
+.comment-date {
+	color: var(--gray-500);
+	font-size: 1.5rem;
+}
+
+.comment-body {
+	font-size: 1.5rem;
+	line-height: 1.6;
+	color: var(--text-main);
+	margin-bottom: 0.8rem;
+	white-space: pre-line;
+}
+
+/*댓글 삭제*/
+.comment-delete-form {
+	text-align: right;
+}
+
+.comment-delete-btn {
+	background: transparent;
+	border: none;
+	color: var(--gray-500);
+	font-size: 1.5rem;
+	cursor: pointer;
+}
+
+.comment-delete-btn:hover {
+	color: #ff4444;
+	font-weight: 600;
+	text-decoration: underline;
+}
+
+.no-comment {
+	text-align: center;
+	color: var(--gray-500);
+	font-size: 1.4rem;
+	margin-top: 2rem;
+}
 
 /*목록으로 가기*/
 .back-list {
 	margin: 4rem 0;
 	text-align: center;
 }
+
 .back-list a {
 	color: var(--text-main);
 	font-size: 1.5rem;
 	text-decoration: underline;
 	transition: color 0.2s;
 }
+
 .back-list a:hover {
 	color: var(--text-main);
 	font-weight: 600;

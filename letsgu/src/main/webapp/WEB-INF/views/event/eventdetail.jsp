@@ -6,6 +6,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/eventdetail.css">
 <meta charset="UTF-8">
@@ -76,26 +78,33 @@
 				<!-- 액션영역 ( 추천/비추천, 참여버튼, 북마크) -->
 				<div class="detail-actions">
 
-					<!-- 추천 / 비추천 버튼 -->
+					<!-- 추천 / 비추천 / 북마크 -->
 					<div class="like-section">
-						<form action="${pageContext.request.contextPath}/letsgu/event/like" method="post" class="inline-form">
-							<input type="hidden" name="eventId" value="${event.eventId}">
-							<button type="submit" class="like-btn">❤️ ${event.likeCount}</button>
-						</form>
-
-						<form action="${pageContext.request.contextPath}/letsgu/event/dislike" method="post" class="inline-form">
-							<input type="hidden" name="eventId" value="${event.eventId}">
-							<button type="submit" class="dislike-btn">👎 ${event.dislikeCount}</button>
-						</form>
+						<button class="icon-btn like-btn">
+							<span class="material-symbols-outlined">favorite</span>
+							<span class="like-count">20</span>
+						</button>
+					
+						<button class="icon-btn dislike-btn">
+							<span class="material-symbols-outlined">thumb_down</span>
+							<span class="dislike-count">2</span>
+						</button>
+					
+						<button class="icon-btn bookmark-btn">
+							<span class="material-symbols-outlined">bookmark</span>
+						</button>
 					</div>
-
+						
 					<!-- 참여하기 버튼 -->
+					<div class = "right-action-group">
 					<c:if test="${event.categoryId == 2}">
 						<c:if test="${LOGIN_ID == null || LOGIN_ID.userId != event.authorId}">
 							<!-- 로그인 안 했거나, 작성자가 아닐 때만 보여줌 -->
 							<div class="participate">
+								<form action="${pageContext.request.contextPath}/letsgu/part/joinevent" method="post" class="inline-form">
 									<input type="hidden" name="eventId" value="${event.eventId}">
 									<button type="submit" class="join-btn">참여하기</button>
+								</form>
 							</div>
 						</c:if>
 					</c:if>
@@ -115,30 +124,66 @@
 							</form>
 						</div>
 					</c:if>
-
+				 </div>
 				</div>
 			</div>
 		</section>
 				
 		<!-- 댓글 영역  시작-->
 		<section class = "comment-section">
+			<h3 class="comment-title">댓글</h3>
 				<!-- 댓글 내용 추가 -->
 				<!-- 댓글 작성 부분 -->
 				<c:if test="${LOGIN_ID != null}">
-					<form action="${pageContext.request.contextPath}/letsgu/comment/reg" method="post" class="comment-form">
+					<form action="${pageContext.request.contextPath}/letsgu/event/commentadd" method="post" class="comment-form">
 						<input type="hidden" name="eventId" value="${event.eventId}">
 						<input type="hidden" name="userId" value="${LOGIN_ID.userId}">
-						<textarea name="content" class="comment-input" placeholder="댓글을 입력해주세요 😊" required></textarea>
+						<textarea name="content" class="comment-input" placeholder="댓글을 입력해주세요." required></textarea>
 						<button type="submit" class="comment-submit-btn">등록</button>
 					</form>
 				</c:if>
 				
 				<c:if test="${LOGIN_ID == null}">
 					<div class="comment-login-required">
-						<a href="${pageContext.request.contextPath}/letsgu/login">로그인</a> 후 댓글을 작성할 수 있어요.
+						<a href="${pageContext.request.contextPath}/letsgu/login">로그인 후 댓글을 작성할 수 있어요.</a>
 					</div>
 				</c:if>
+				
 				<!-- 댓글 리스트 부분 추가 -->
+				<div class="comment-list">
+				
+				<c:choose>
+					<c:when test="${LOGIN_ID != null && empty commentList}">
+						<p class="no-comment">아직 댓글이 없어요. 첫 댓글을 남겨주세요!</p>
+					</c:when>
+					
+					<c:otherwise>
+						<c:forEach var="cmt" items="${commentList}">
+							<div class="comment-item">
+								<div class="comment-header">
+									<span class="comment-writer">${cmt.authorName}</span>
+									<span class="comment-date">
+										<fmt:formatDate value="${cmt.createTime}" pattern="yyyy-MM-dd HH:mm"/>
+									</span>
+								</div>
+								
+								<div class="comment-body">
+									<p>${cmt.content}</p>
+								</div>
+
+								<c:if test="${LOGIN_ID != null && LOGIN_ID.userId == cmt.userId}">
+									<form action="${pageContext.request.contextPath}/letsgu/event/commentdel" method="post" class="comment-delete-form">
+										<input type="hidden" name="commentId" value="${cmt.commentId}">
+										<input type="hidden" name="eventId" value="${event.eventId}">
+										<button type="submit" class="comment-delete-btn">삭제</button>
+									</form>
+								</c:if>
+							</div>
+						</c:forEach>
+					</c:otherwise>
+					
+				</c:choose>
+			</div>
 		</section>
 		
 		<!-- 목록으로 -->
