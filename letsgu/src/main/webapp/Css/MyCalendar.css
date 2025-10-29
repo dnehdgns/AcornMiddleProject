@@ -2,19 +2,20 @@
 
 
 .mc-tabs {
-	max-width: 1000px;
-	margin: 24px auto 0;
+	width: 100rem;  
+	margin: 3rem auto ;
 	display: flex;
-	gap: 8px;
+	gap: 2rem;
 }
 .mc-tab {
 	padding: 8px 14px;
 	border:1px solid #ddd; 
-	border-radius: 20px;
+	border-radius: 2rem;
 	cursor:pointer;
-	background:#f6f6f6;
+	background: var(--light-orange);
+	font-weight: 600;
  }
-.mc-tab.active {
-	background:#222;
-	color:#fff;
- }
+.mc-tab.is-active {
+  font-weight: 800;
+  color :var(--main-orange);
+}
