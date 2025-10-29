@@ -30,48 +30,129 @@ public class LikeDAO {
 		
 		return con;
 	}
-	public boolean hasAlreadyLiked(int eventId, int userId, String type) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM LIKE_INFO WHERE EVENT_ID = ? AND USER_ID = ? AND TYPE = ?";
-        try (Connection con = dbcon(); PreparedStatement pst = con.prepareStatement(sql)) {
-            pst.setInt(1, eventId); pst.setInt(2, userId); pst.setString(3, type);
-            try (ResultSet rs = pst.executeQuery()) {
-                return rs.next() && rs.getInt(1) > 0;
-            }
-        }
-    }
-
-    public void insertLike(int eventId, int userId, String type) throws SQLException {
-        String sql = "INSERT INTO LIKE_INFO (EVENT_ID, USER_ID, TYPE, CREATED_AT) VALUES (?, ?, ?, SYSDATE)";
-        try (Connection con = dbcon(); PreparedStatement pst = con.prepareStatement(sql)) {
-            pst.setInt(1, eventId); pst.setInt(2, userId); pst.setString(3, type);
-            pst.executeUpdate();
-        }
-    }
-
-    public void deleteLike(int eventId, int userId, String type) throws SQLException {
-        String sql = "DELETE FROM LIKE_INFO WHERE EVENT_ID = ? AND USER_ID = ? AND TYPE = ?";
-        try (Connection con = dbcon(); PreparedStatement pst = con.prepareStatement(sql)) {
-            pst.setInt(1, eventId); pst.setInt(2, userId); pst.setString(3, type);
-            pst.executeUpdate();
-        }
-    }
-
-    public Map<String, Integer> getLikeCounts(int eventId) throws SQLException {
-        String sql = "SELECT TYPE, COUNT(*) FROM LIKE_INFO WHERE EVENT_ID = ? GROUP BY TYPE";
-        Map<String, Integer> counts = new HashMap<>();
-        try (Connection con = dbcon(); PreparedStatement pst = con.prepareStatement(sql)) {
-            pst.setInt(1, eventId);
-            try (ResultSet rs = pst.executeQuery()) {
-                while (rs.next()) {
-                    counts.put(rs.getString("TYPE"), rs.getInt(2));
-                }
-            }
-        }
-        counts.putIfAbsent("like", 0);
-        counts.putIfAbsent("dislike", 0);
-        return counts;
-    }
-
+	public boolean isLiked(int userId, int eventId) {
+	    String sql = "SELECT COUNT(*) FROM LIKE_INFO WHERE user_id = ? AND event_id = ? AND like_type = 'LIKE'";
+	    try (Connection conn = dbcon();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, userId);
+	        stmt.setInt(2, eventId);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            return rs.getInt(1) > 0;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+	public boolean isdisLiked(int userId, int eventId) {
+	    String sql = "SELECT COUNT(*) FROM LIKE_INFO WHERE user_id = ? AND event_id = ? AND like_type = 'DISLIKE'";
+	    try (Connection conn = dbcon();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, userId);
+	        stmt.setInt(2, eventId);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            return rs.getInt(1) > 0;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
 	
-	
+    public boolean addLike(int event_id, int user_id) {
+        String sql = "INSERT INTO LIKE_INFO (event_id, user_id, like_type) VALUES (?, ?, 'LIKE')";
+        try (Connection conn = dbcon();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, event_id);
+            stmt.setInt(2, user_id);
+            return stmt.executeUpdate() == 1;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+    
+    public boolean addDisLike(int event_id, int user_id) {
+        String sql = "INSERT INTO LIKE_INFO (event_id, user_id, like_type) VALUES (?, ?, 'DISLIKE')";
+        try (Connection conn = dbcon();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, event_id);
+            stmt.setInt(2, user_id);
+            return stmt.executeUpdate() == 1;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public boolean deleteLike(int eventid, int userid) {
+        String sql = "DELETE FROM LIKE_INFO WHERE user_id = ? AND event_id = ? AND like_type = 'LIKE'";
+        try (Connection conn = dbcon();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userid);
+            stmt.setInt(2, eventid);
+            conn.setAutoCommit(true);
+            return stmt.executeUpdate() == 1;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+    public boolean deleteDisLike(int eventid, int userid) {
+        String sql = "DELETE FROM LIKE_INFO WHERE user_id = ? AND event_id = ? AND like_type = 'DISLIKE'";
+        try (Connection conn = dbcon();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userid);
+            stmt.setInt(2, eventid);
+            conn.setAutoCommit(true);
+            return stmt.executeUpdate() == 1;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public int getLikeCount(int eventId) {
+        String sql = "SELECT COUNT(*) FROM LIKE_INFO WHERE event_id = ? AND like_type = 'LIKE'";
+        try (Connection conn = dbcon();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, eventId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public int getDisLikeCount(int eventId) {
+        String sql = "SELECT COUNT(*) FROM LIKE_INFO WHERE event_id = ? AND like_type = 'DISLIKE'";
+        try (Connection conn = dbcon();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, eventId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public boolean updateLikeType(int userId, int eventId, String newType) {
+        String sql = "UPDATE LIKE_INFO SET like_type = ? WHERE user_id = ? AND event_id = ?";
+        try (Connection conn = dbcon();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, newType); // 'LIKE' 또는 'DISLIKE'
+            pstmt.setInt(2, userId);
+            pstmt.setInt(3, eventId);
+
+            int result = pstmt.executeUpdate();
+            return result > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

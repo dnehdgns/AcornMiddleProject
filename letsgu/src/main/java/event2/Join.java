@@ -2,20 +2,16 @@ package event2;
 
 import java.util.Date;
 
-public class Like {
+public class Join {
 	int event_id;
 	int user_id;
-	String type;
 	Date date;
-	
-	public Like(int like_id, int event_id, int user_id, String type, Date date) {
+	public Join(int event_id, int user_id, Date date) {
 		super();
 		this.event_id = event_id;
 		this.user_id = user_id;
-		this.type = type;
 		this.date = date;
 	}
-	
 	public int getEvent_id() {
 		return event_id;
 	}
@@ -28,18 +24,16 @@ public class Like {
 	public void setUser_id(int user_id) {
 		this.user_id = user_id;
 	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
 	public Date getDate() {
 		return date;
 	}
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	@Override
+	public String toString() {
+		return "Join [event_id=" + event_id + ", user_id=" + user_id + ", date=" + date + "]";
+	}
+	
+	
 }
-
-

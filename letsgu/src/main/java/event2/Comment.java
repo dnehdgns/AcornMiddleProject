@@ -1,81 +1,61 @@
 package event2;
 
-import java.sql.Clob;
-import java.sql.Date;
+import java.util.Date;
 
 public class Comment {
-	int comment_id;
-	int event_id;
-	int user_id;
-	String content;
-	Date create_time;
-	
-	public Comment() {}
-	
-	public Comment(int comment_id, int event_id, int user_id, String content, Date create_time) {
-		super();
-		this.comment_id = comment_id;
-		this.event_id = event_id;
-		this.user_id = user_id;
-		this.content = content;
-		this.create_time = create_time;
-	}
-	
-	
-	public int getComment_id() {
-		return comment_id;
-	}
+    private int commentId;
+    private int eventId;
+    private String userId;
+    private String content;
+    private Date createTime;
 
+    public Comment() {}
 
-	public void setComment_id(int comment_id) {
-		this.comment_id = comment_id;
-	}
+    public Comment(int commentId, int eventId, String userId, String content, Date createTime) {
+        this.commentId = commentId;
+        this.eventId = eventId;
+        this.userId = userId;
+        this.content = content;
+        this.createTime = createTime;
+    }
 
+    public int getCommentId() {
+        return commentId;
+    }
 
-	public int getEvent_id() {
-		return event_id;
-	}
+    public void setCommentId(int commentId) {
+        this.commentId = commentId;
+    }
 
+    public int getEventId() {
+        return eventId;
+    }
 
-	public void setEvent_id(int event_id) {
-		this.event_id = event_id;
-	}
+    public void setEventId(int eventId) {
+        this.eventId = eventId;
+    }
 
+    public String getUserId() {
+        return userId;
+    }
 
-	public int getUser_id() {
-		return user_id;
-	}
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
+    public String getContent() {
+        return content;
+    }
 
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
+    public Date getCreateTime() {
+        return createTime;
+    }
 
-	public String getContent() {
-		return content;
-	}
-
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-
-	public Date getCreate_time() {
-		return create_time;
-	}
-
-
-	public void setCreate_time(Date create_time) {
-		this.create_time = create_time;
-	}
-
-
-	@Override
-	public String toString() {
-		return "Comment [comment_id=" + comment_id + ", event_id=" + event_id + ", user_id=" + user_id + ", content="
-				+ content + ", create_time=" + create_time + "]";
-	}
-
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 }
