@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import event1.Event;
+
 //DB에서 날짜별 이벤트 리스트 집계 JSON 반환
 @WebServlet("/letsgu/event/listByDate")
 public class MainCalendarListByDateServlet extends HttpServlet {

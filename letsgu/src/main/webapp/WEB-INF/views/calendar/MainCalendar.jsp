@@ -18,6 +18,7 @@
 </head>
 <body>
 
+  <h1>Let's Gu event calendar</h1>
   <div id="calendar"></div>
 
   <script>
@@ -25,13 +26,13 @@
       fetchCountsUrl: '<%=request.getContextPath()%>/letsgu/cal/event/count',
       fetchDayEventsUrl: '<%=request.getContextPath()%>/letsgu/event/listByDate',
       eventDetailUrl: '<%=request.getContextPath()%>/letsgu/event/eventdetail',
-      // googleApiKey:'AIzaSyBhY4tnpBDoJpELdAeXET_coy8UdSjcAWg'
+      googleApiKey:'AIzaSyBhY4tnpBDoJpELdAeXET_coy8UdSjcAWg',
       locale: 'ko'
     };
   </script>
 
   <!-- JS -->
-  <script src="<%=request.getContextPath()%>/js/MainCalendar.js" defer></script>
+  <script src="<%=request.getContextPath()%>/Js/MainCalendar.js" defer></script>
 
 </body>
 </html>

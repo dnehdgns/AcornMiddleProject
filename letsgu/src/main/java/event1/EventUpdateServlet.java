@@ -41,6 +41,14 @@ public class EventUpdateServlet extends HttpServlet {
 		int eventId = Integer.parseInt(req.getParameter("eventId"));
 		Event event = e_service.getEventById(eventId);
 		
+		String selectedParam = req.getParameter("category_id");
+		int selectedCategory;
+		if (isValid(selectedParam)) {
+			selectedCategory = Integer.parseInt(selectedParam);
+		} else {
+			selectedCategory = event.getCategoryId(); // 기본값: 기존 이벤트의 카테고리
+		}
+		
 		
 		List<Category> categoryList = c_service.getCategoryList();
 		List<String> regionList = e_service.getRegionList();
@@ -48,6 +56,7 @@ public class EventUpdateServlet extends HttpServlet {
 		req.setAttribute("event", event);
 		req.setAttribute("categoryList", categoryList);
 		req.setAttribute("regionList", regionList);
+		req.setAttribute("selectedCategory", selectedCategory);
 
 		req.getRequestDispatcher("/WEB-INF/views/event/eventUpdate.jsp").forward(req, resp);
 	}

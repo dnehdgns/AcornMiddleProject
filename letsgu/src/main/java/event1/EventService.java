@@ -89,5 +89,10 @@ public class EventService {
 	public List<Event> searchEventByTitle(String keyword) {
 		return dao.findEventByTitle(keyword);
 	}
+	
+	//인기순 정렬
+	public List<Event> getEventByPopularity(){
+		return dao.findEventsByPopularity();
+	}
 
 }

@@ -21,6 +21,10 @@ public class EventListServlet extends HttpServlet {
 
 		// 상태 갱신(마감일, 비추천)
 		e_service.updateEventStatus();
+		
+		String categoryParam = req.getParameter("category");
+		String regionParam = req.getParameter("region");
+		String sort = req.getParameter("sort");
 
 		// 요청 파라미터 처리
 		int currentPage = 1;
@@ -31,49 +35,52 @@ public class EventListServlet extends HttpServlet {
 			currentPage = Integer.parseInt(req.getParameter("p"));
 		}
 
-		String categoryParam = req.getParameter("category");
-		String regionParam = req.getParameter("region");
-		String fileName = req.getParameter("fileName");
-
+		
 		// 조회 데이터
-		List<Event> eventList;
 		List<String> regionList = e_service.getRegionList();
 		List<Category> categoryList = c_service.getCategoryList();
+		List<Event> eventList;
 
 		// 필터 조건별 이벤트 조회
-		if (isValid(regionParam) && !"전체".equals(regionParam)) { // 지역 선택된 경우
+		if ("popular".equals(sort)) {
+			eventList = e_service.getEventByPopularity();  
+			req.setAttribute("isPopular", true);
+		}
+		else {
+			if (isValid(regionParam) && !"전체".equals(regionParam)) { // 지역 선택된 경우
 
-			if (isValid(categoryParam)) {
-				// 특정 지역 + 특정 카테고리
-				int categoryId = Integer.parseInt(categoryParam);
-				eventList = e_service.getEventListByRegionAndCategory(regionParam, categoryId);
-			} else {
-				// 특정 지역 + 전체 카테고리
-				eventList = e_service.getEventListByRegion(regionParam);
-			}
+				if (isValid(categoryParam)) {
+					// 특정 지역 + 특정 카테고리
+					int categoryId = Integer.parseInt(categoryParam);
+					eventList = e_service.getEventListByRegionAndCategory(regionParam, categoryId);
+				} else {
+					// 특정 지역 + 전체 카테고리
+					eventList = e_service.getEventListByRegion(regionParam);
+				}
 
-		} else { // 지역 '전체'인 경우
-			if (isValid(categoryParam)) {
-				// 전체 지역 + 특정 카테고리
-				int categoryId = Integer.parseInt(categoryParam);
-				eventList = e_service.getEventListByCategory(categoryId);
-			} else {
-				// 전체 지역 + 전체 카테고리
-				eventList = e_service.getEventList(currentPage, pageSize);
+			} else { // 지역 '전체'인 경우
+				if (isValid(categoryParam)) {
+					// 전체 지역 + 특정 카테고리
+					int categoryId = Integer.parseInt(categoryParam);
+					eventList = e_service.getEventListByCategory(categoryId);
+				} else {
+					// 전체 지역 + 전체 카테고리
+					eventList = e_service.getEventList(currentPage, pageSize);
+				}
 			}
+			// 페이징 처리
+			int totalRecords = e_service.getTotalCount();
+			PageHandler page = new PageHandler(pageSize, grpSize, totalRecords, currentPage);
+			System.out.println("[ 전체 이벤트 수 ] : " + totalRecords);
+			req.setAttribute("page", page);
+			req.setAttribute("isPopular", false);
 		}
 
-		// 페이징 처리
-		int totalRecords = e_service.getTotalCount();
-		PageHandler page = new PageHandler(pageSize, grpSize, totalRecords, currentPage);
-		System.out.println("[ 전체 이벤트 수 ] : " + totalRecords);
 
 		//데이터 심기
 		req.setAttribute("regionList", regionList);
 		req.setAttribute("categoryList", categoryList);
 		req.setAttribute("eventList", eventList);
-		req.setAttribute("page", page);
-		req.setAttribute("fileName", fileName);
 
 		req.getRequestDispatcher("/WEB-INF/views/event/eventList.jsp").forward(req, resp);
 

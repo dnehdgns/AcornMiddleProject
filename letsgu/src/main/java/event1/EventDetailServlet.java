@@ -1,6 +1,7 @@
 package event1;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +20,7 @@ public class EventDetailServlet extends HttpServlet {
 
 		req.setCharacterEncoding("utf-8");
 
-		//세션 확인
+		// 세션 확인
 		Users loginId = getLoginUser(req);
 		req.setAttribute("loginUser", loginId);
 
@@ -28,7 +29,11 @@ public class EventDetailServlet extends HttpServlet {
 		EventService service = new EventService();
 		Event event = service.getEventById(eventId);
 
+		String keyword = req.getParameter("keyword");
+
+
 		req.setAttribute("event", event);
+		req.setAttribute("keyword", keyword);
 
 		req.getRequestDispatcher("/WEB-INF/views/event/eventdetail.jsp").forward(req, resp);
 	}

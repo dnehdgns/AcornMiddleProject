@@ -1,0 +1,142 @@
+@charset "UTF-8";
+
+.admin-section {
+	margin-top: 4rem;
+}
+
+.admin-section h2{
+	border-bottom: 0.1rem solid var(--gray-300);
+	padding-bottom: 2rem;
+	font-size: 2.4rem;
+	font-weight: 600;
+	color: var(--text-main);
+}
+
+.inactive-grid {
+	display: grid;
+	grid-template-columns: repeat(4,1fr);
+	gap: 1.6rem;
+	padding: 1.6rem 0;
+}
+
+.inactive-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: #fff;
+	border: 0.1rem solid var(--gray-300);
+	border-radius: 0.8rem;
+	box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.05);
+	padding: 1.2rem;
+	text-align: center;
+	cursor: default;
+	transition: all 0.2s ease-in-out;
+}
+.inactive-card:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 0.8rem 1.2rem rgba(0, 0, 0, 0.08);
+	border-color: var(--text-main);
+}
+
+.card-thumb {
+	width: 100%;
+	height: 14rem;
+	border-radius: 0.5rem;
+	overflow: hidden;
+	margin-bottom: 1rem;
+	background-color: var(--gray-100);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.card-thumb img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.card-info {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	width: 100%;
+}
+
+.card-title {
+	font-size: 1.4rem;
+	font-weight: 600;
+	color: var(--text-main);
+	margin-bottom: 0.4rem;
+	word-break: keep-all;
+}
+
+.card-title a {
+	color: var(--text-main);
+	text-decoration: none;
+}
+
+.card-title a:hover {
+	color: var(--text-main);
+	text-decoration: underline;
+}
+
+.card-region {
+	font-size: 1.2rem;
+	color: var(--gray-500);
+}
+
+.card-status {
+	font-size: 1.2rem;
+	color: var(--text-main);
+}
+
+.card-status span {
+	font-weight: 600;
+	color: red;
+}
+
+.card-date {
+	font-size: 1.1rem;
+	color: var(--gray-500);
+}
+
+/*전체 삭제 버튼*/
+.admin-actions {
+	display: flex;
+	justify-content: center;
+	margin-top: 2.4rem;
+}
+
+.admin-actions button {
+	padding: 1rem 2rem;
+	background-color: #ff3939;
+	color: #fff;
+	font-size: 1.6rem;
+	font-weight: 600;
+	border: none;
+	border-radius: 0.8rem;
+	cursor: pointer;
+}
+
+.no-result {
+	text-align: center;
+	color: var(--gray-500);
+	padding: 21rem 0;
+	font-size: 1.6rem;
+	line-height: 1.8;
+}
+
+.no-result p:first-child {
+	color: var(--text-main);
+	font-weight: 600;
+	font-size: 1.8rem;
+}
+
+.admin-actions button[disabled] {
+	background-color: var(--gray-300);
+	color: var(--gray-500);
+	cursor: not-allowed;
+}
+
