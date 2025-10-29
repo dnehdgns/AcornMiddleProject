@@ -8,9 +8,9 @@ public class MypageService {
 	public MypageService(UserDAO dao) {
 		this.dao=dao;
 	}
-	public Users login(String id) {
+	public Users login(int id) {
 
-		return dao.findLoginId(id);
+		return dao.findByUserId(id);
 
 	}
 }
