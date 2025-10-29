@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+
+.mc-tabs {
+	max-width: 1000px;
+	margin: 24px auto 0;
+	display: flex;
+	gap: 8px;
+}
+.mc-tab {
+	padding: 8px 14px;
+	border:1px solid #ddd; 
+	border-radius: 20px;
+	cursor:pointer;
+	background:#f6f6f6;
+ }
+.mc-tab.active {
+	background:#222;
+	color:#fff;
+ }
