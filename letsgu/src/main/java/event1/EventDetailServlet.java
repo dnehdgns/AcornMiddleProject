@@ -3,6 +3,7 @@ package event1;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +28,7 @@ public class EventDetailServlet extends HttpServlet {
 
 		req.setCharacterEncoding("utf-8");
 
-		//세션 확인
+		// 세션 확인
 		Users loginId = getLoginUser(req);
 		req.setAttribute("loginUser", loginId);
 
@@ -36,7 +37,11 @@ public class EventDetailServlet extends HttpServlet {
 		EventService service = new EventService();
 		Event event = service.getEventById(eventId);
 
+		String keyword = req.getParameter("keyword");
+
+
 		req.setAttribute("event", event);
+
 		BookMarkService bookService = new BookMarkService();
 		JoinDAO daoJoin = new JoinDAO();
 		LikeDAO daoLike = new LikeDAO();
@@ -66,6 +71,8 @@ public class EventDetailServlet extends HttpServlet {
 			req.setAttribute("disliked", disliked);
 		}
 
+
+		req.setAttribute("keyword", keyword);
 
 		req.getRequestDispatcher("/WEB-INF/views/event/eventdetail.jsp").forward(req, resp);
 	}

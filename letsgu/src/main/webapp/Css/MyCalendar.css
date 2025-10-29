@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+
+.mc-tabs {
+	width: 100rem;  
+	margin: 3rem auto ;
+	display: flex;
+	gap: 2rem;
+}
+.mc-tab {
+	padding: 8px 14px;
+	border:1px solid #ddd; 
+	border-radius: 2rem;
+	cursor:pointer;
+	background: var(--light-orange);
+	font-weight: 600;
+ }
+.mc-tab.is-active {
+  font-weight: 800;
+  color :var(--main-orange);
+}
