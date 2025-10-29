@@ -13,7 +13,8 @@
   <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@5.8.0/main.global.min.js" defer></script>
 
   <!-- Calendar CSS -->
-  <link href="<%=request.getContextPath()%>/Css/MainCalendar.css?v=1.1" rel="stylesheet"/>
+  <link href="<%=request.getContextPath()%>/Css/base.css" rel="stylesheet"/>
+  <link href="<%=request.getContextPath()%>/Css/MainCalendar.css" rel="stylesheet"/>
 
 </head>
 <body>

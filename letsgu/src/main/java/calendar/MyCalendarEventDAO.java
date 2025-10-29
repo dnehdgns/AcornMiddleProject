@@ -5,21 +5,22 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
 
-
+//마이 캘린더 DAO 
 public class MyCalendarEventDAO {
 
-    // === DB 연결 정보 (환경에 맞게 수정) ===
+	
     private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
     private static final String URL    = "jdbc:oracle:thin:@localhost:1521:testdb";
     private static final String USER   = "scott";
     private static final String PASS   = "tiger";
 
+    //드라이버 로드
     static {
         try { Class.forName(DRIVER); }
         catch (ClassNotFoundException e) { throw new RuntimeException(e); }
     }
 
-    // 서블릿/코드에서 호출하는 이름과 맞춤
+    //DB연결
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASS);
     }
@@ -27,9 +28,8 @@ public class MyCalendarEventDAO {
     private static final String TYPE_BOOKMARK      = "bookmark";
     private static final String TYPE_PARTICIPATION = "participation";
 
-    /**
-     * 날짜별 이벤트 개수 조회 (YYYY-MM-DD -> count)
-     */
+    
+    //일자별 개수 집계 YYYY-MM-DD ~ YYYY-MM-DD 
     public Map<String, Integer> findMyCounts(String userId, LocalDate start, LocalDate end, String type) {
         if (userId == null || start == null || end == null || type == null) {
             throw new IllegalArgumentException("userId/start/end/type는 필수입니다.");
@@ -39,7 +39,7 @@ public class MyCalendarEventDAO {
             "SELECT TO_CHAR(e.event_date, 'YYYY-MM-DD') AS d, COUNT(*) AS cnt \n" +
             "FROM BOOKMARK b \n" +
             "JOIN EVENT e ON e.event_id = b.event_id \n" +
-            "WHERE b.u_id = ? \n" +
+            "WHERE b.user_id = ? \n" +
             "  AND TRUNC(e.event_date) BETWEEN ? AND ? \n" +
             "GROUP BY TO_CHAR(e.event_date, 'YYYY-MM-DD') \n" +
             "ORDER BY d";
@@ -48,7 +48,7 @@ public class MyCalendarEventDAO {
             "SELECT TO_CHAR(e.event_date, 'YYYY-MM-DD') AS d, COUNT(*) AS cnt \n" +
             "FROM PARTICIPATION p \n" +
             "JOIN EVENT e ON e.event_id = p.event_id \n" +
-            "WHERE p.u_id = ? \n" +
+            "WHERE p.user_id = ? \n" +
             "  AND TRUNC(e.event_date) BETWEEN ? AND ? \n" +
             "GROUP BY TO_CHAR(e.event_date, 'YYYY-MM-DD') \n" +
             "ORDER BY d";
@@ -74,11 +74,7 @@ public class MyCalendarEventDAO {
         return map;
     }
 
-    /**
-     * 해당 날짜의 이벤트 리스트 조회
-     * 반환: List<Map<String,Object>>
-     *  - 키: eventId, title, eventDate(String:YYYY-MM-DD), region, capacity(Long|null), status, description, authorId
-     */
+    //날짜별 목록 YYYY-MM-DD 조회 
     public List<Map<String, Object>> findMyListByDate(String userId, LocalDate date, String type) {
         if (userId == null || date == null || type == null) {
             throw new IllegalArgumentException("userId/date/type는 필수입니다.");
@@ -88,7 +84,7 @@ public class MyCalendarEventDAO {
             "SELECT e.event_id, e.title, e.event_date, e.region, e.capacity, e.status, e.description, e.author_id \n" +
             "FROM BOOKMARK b \n" +
             "JOIN EVENT e ON e.event_id = b.event_id \n" +
-            "WHERE b.u_id = ? \n" +
+            "WHERE b.user_id = ? \n" +
             "  AND TRUNC(e.event_date) = ? \n" +
             "ORDER BY e.event_date, e.event_id";
 
@@ -96,7 +92,7 @@ public class MyCalendarEventDAO {
             "SELECT e.event_id, e.title, e.event_date, e.region, e.capacity, e.status, e.description, e.author_id \n" +
             "FROM PARTICIPATION p \n" +
             "JOIN EVENT e ON e.event_id = p.event_id \n" +
-            "WHERE p.u_id = ? \n" +
+            "WHERE p.user_id = ? \n" +
             "  AND TRUNC(e.event_date) = ? \n" +
             "ORDER BY e.event_date, e.event_id";
 

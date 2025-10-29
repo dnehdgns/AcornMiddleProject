@@ -17,22 +17,22 @@ public class MyCalendarListByDateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        // 0) 인코딩/캐시 방지
+        // 인코딩/캐시 방지
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
         resp.setHeader("Pragma", "no-cache");
 
-        // 1) 로그인 확인
+        // 1. 로그인 확인
         HttpSession session = req.getSession(false);
-        String userId = (session != null) ? (String) session.getAttribute("userId") : null;
-        if (userId == null || userId.trim().isEmpty()) {
-            sendJson(resp, 401, "{\"items\":[]}");
-            return;
+        String userId = null;
+        if (session != null) {
+            Object v = session.getAttribute("user_id");
+            if (v != null) userId = String.valueOf(v);
         }
 
-        // 2) 파라미터
-        String dateStr = req.getParameter("date"); // YYYY-MM-DD
+        // 2. 파라미터
+        String dateStr = req.getParameter("date"); 
         String type    = sanitizeType(req.getParameter("type"));
 
         LocalDate date;
@@ -45,8 +45,14 @@ public class MyCalendarListByDateServlet extends HttpServlet {
             sendJson(resp, 400, "{\"items\":[]}");
             return;
         }
+        
+        // 3. userId 없으면 빈 결과
+        if (userId == null || userId.trim().isEmpty()) {
+            sendJson(resp, 200, "{\"items\":[]}");
+            return;
+        }
 
-        // 3) DAO 호출 (DTO 없이 Map<String,Object> 리스트라고 가정)
+        // 4.DAO 호출
         List<Map<String,Object>> items;
         try {
             MyCalendarEventDAO dao = new MyCalendarEventDAO();
@@ -58,13 +64,13 @@ public class MyCalendarListByDateServlet extends HttpServlet {
             return;
         }
 
-        // 4) JSON 직렬화
+        // 5. JSON 직렬화
         StringBuilder sb = new StringBuilder("{\"items\":[");
         boolean first = true;
         for (Map<String,Object> row : items) {
             if (!first) sb.append(',');
             sb.append('{');
-            // 기대 키: eventId, title, eventDate, region, capacity, status, description, authorId
+
             sb.append("\"eventId\":").append(n2(row.get("eventId"))).append(',');
             sb.append("\"title\":\"").append(esc(s2(row.get("title")))).append("\",");
             sb.append("\"eventDate\":\"").append(esc(date2(row.get("eventDate")))).append("\",");
@@ -103,7 +109,7 @@ public class MyCalendarListByDateServlet extends HttpServlet {
         if (o instanceof java.util.Date) {
             return new java.sql.Date(((java.util.Date)o).getTime()).toLocalDate().toString();
         }
-        return String.valueOf(o); // 이미 YYYY-MM-DD 문자열이면 그대로
+        return String.valueOf(o); 
     }
 
     private static String esc(String s) {
