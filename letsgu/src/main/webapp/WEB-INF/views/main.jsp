@@ -144,7 +144,7 @@ main {
         <option>광주</option>
       </select>
       <form action="${pageContext.request.contextPath}/letsgu/event/list" method="get">
-	      <input type="text" class="keyword" placeholder="검색어를 입력하세요">
+	      <input type="text" name="keyword" placeholder="검색어를 입력하세요">
 	      <button type="submit">검색</button>
       </form>
     </div>
