@@ -1,0 +1,145 @@
+@charset "UTF-8";
+
+/* =========================
+   0) 컬러 토큰
+   ========================= */
+:root {
+  --main-orange: #FF7E36;
+  --light-orange: #FFF5E6;
+  --gray-100: #F5F5F5;
+  --gray-300: #ddd;
+  --gray-500: #999;
+  --text-main: #333;
+  --radius-2: 12px;
+  --radius-3: 18px;
+  --radius-4: 24px;
+  --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================
+  	메인
+   ========================= */
+.main {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+.card-container {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 10rem;
+  margin-bottom: 15rem;
+}
+
+#card1{ 
+  width:30%;
+  background: #fff;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-4);
+  box-shadow: var(--shadow-md);
+  padding: 3rem;
+  height: auto;
+}
+
+#card2 {
+  width:70%;
+  background: var(--light-orange);
+  border: 1px solid var(--main-orange);
+  border-radius: var(--radius-4);
+  box-shadow: var(--shadow-md);
+  padding: 3rem;
+}
+.mypage-mycal {
+  position: relative;
+  height: min(70vh, 640px);
+  overflow: hidden;         /* 내부 스크롤 제거 */
+  border-radius: 16px;
+  background: #fff;
+}
+.mypage-mycal iframe {
+  transform: scale(0.8);
+    position: absolute;
+    top: -8rem;
+    left: -10rem;
+    width: 100rem;
+    height: 80rem;
+  border: none;
+  display: block;
+  overflow: hidden;        
+}
+
+/* =========================
+   card1 
+   ========================= */
+.profile {
+  align-items: center;
+  margin: 2rem auto;
+  place-self: center;
+}
+
+.avatar {
+  display: block;
+  width: 20rem;
+  height: 20rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gray-300);
+}
+.meta {
+  margin: 3rem auto;
+}
+.meta p {
+  font-size: 1.4rem;
+  margin:1rem auto
+}
+
+.badges {
+  display: flex;
+  margin-top: 1rem;
+}
+
+.badge {
+  font-size: 1.2rem;
+  margin-right: 2rem;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--gray-100);
+  border: 1px solid var(--gray-300);
+}
+
+.actions {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 10px;
+  padding: 0 3rem;
+  flex-wrap: wrap;
+  align-content: space-between;
+  justify-content: flex-end;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--main-orange);
+  background: var(--main-orange);
+  color: #fff;
+  font-size: 1.35rem;
+  cursor: pointer;
+}
+
+.btn.line {
+  background: #fff;
+  color: var(--main-orange);
+  border-color: var(--main-orange);
+  width: 100%;
+}
+
+.btn.gray {
+  background: #fff;
+  color: var(--text-main);
+  border-color: var(--gray-300);
+}
