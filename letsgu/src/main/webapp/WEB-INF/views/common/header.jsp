@@ -61,12 +61,33 @@
                   onclick="location.href='${pageContext.request.contextPath}/letsgu/logout'">로그아웃</button>
         </c:when>
         <c:otherwise>
-          <c:if test="${empty LOGIN_ID}">
-            <button class="site-header__btn site-header__btn--line"
-                    onclick="location.href='${pageContext.request.contextPath}/letsgu/login?eventId=${eventId}'">로그인</button>
-            <button class="site-header__btn site-header__btn--primary"
-                    onclick="location.href='${pageContext.request.contextPath}/letsgu/signup'">회원가입</button>
-          </c:if>
+			<c:if test="${empty LOGIN_ID}">
+			  <c:choose>
+			    <c:when test="${not empty eventId}">
+			      <button class="site-header__btn site-header__btn--line"
+			              onclick="location.href='${pageContext.request.contextPath}/letsgu/login?eventId=${eventId}'">
+			        로그인
+			      </button>
+			    </c:when>
+			    <c:when test="${not empty region}">
+			      <button class="site-header__btn site-header__btn--line"
+			              onclick="location.href='${pageContext.request.contextPath}/letsgu/login?region=${region}'">
+			        로그인
+			      </button>
+			    </c:when>
+			    <c:otherwise>
+			      <button class="site-header__btn site-header__btn--line"
+			              onclick="location.href='${pageContext.request.contextPath}/letsgu/login'">
+			        로그인
+			      </button>
+			    </c:otherwise>
+			  </c:choose>
+			
+			  <button class="site-header__btn site-header__btn--primary"
+			          onclick="location.href='${pageContext.request.contextPath}/letsgu/signup'">
+			    회원가입
+			  </button>
+			</c:if>
         </c:otherwise>
       </c:choose>
     </div>

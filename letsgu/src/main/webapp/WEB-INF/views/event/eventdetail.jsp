@@ -115,7 +115,12 @@
 							<div class="participate">
 								<form action="${pageContext.request.contextPath}/letsgu/event/join" method="post" class="inline-form">
 									<input type="hidden" name="eventId" value="${event.eventId}">
-									<button type="submit" class="join-btn">참여하기</button>
+									<button type="submit" class="join-btn <c:if test='${joined}'>active</c:if>">
+								      <c:choose>
+								        <c:when test="${joined}">참여취소</c:when>
+								        <c:otherwise>참여하기</c:otherwise>
+								      </c:choose>
+									</button>
 								</form>
 							</div>
 						</c:if>
