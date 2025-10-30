@@ -33,8 +33,8 @@ r { filter: brightness(0.96); }
 /* ===== 플로팅 배지 ===== */
 .floating-calendar-badge {
   position: fixed;
-  top: 10rem;
-  left: 30rem;
+  top: 15rem;
+  right: 10rem;
   background-color: var(--main-orange);
   color: #fff;
   font-size: 1.5rem;
