@@ -29,6 +29,31 @@ body {
   margin: 0;
 }
 r { filter: brightness(0.96); }
+
+/* ===== 플로팅 배지 ===== */
+.floating-calendar-badge {
+  position: fixed;
+  top: 10rem;
+  left: 30rem;
+  background-color: var(--main-orange);
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 1.5rem 2rem;
+  border-radius: 999px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  transition: all 0.25s ease;
+  z-index: 1000;
+}
+.floating-calendar-badge:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 126, 54, 0.3);
+  filter: brightness(0.95);
+}
+
 /* =========================================================
    2) MAIN (본문 전용)
    ========================================================= */
@@ -128,6 +153,11 @@ main {
 </header>
 <!-- ===== 메인 ===== -->
 <main>
+
+   <a href="${pageContext.request.contextPath}/letsgu/mainCalendar" class="floating-calendar-badge">
+     <span>  🗓️ 메인 캘린더</span>
+   </a>
+	 
   <div class="text">
     <p>LET'S GU에서</p>
     <p id="changingText">레츠고</p>
