@@ -85,10 +85,13 @@ public class EventUpdateServlet extends HttpServlet {
 		String description = req.getParameter("description");
 		String oldUploadImg = req.getParameter("oldUploadImg");
 		
+		System.out.println("문자열 : "+ eventDateStr);
 		Date eventDate = (isValid(eventDateStr)) ? Date.valueOf(eventDateStr) : null;
-		
+		System.out.println("문자열1 : "+eventDate);
 		//파일 업로드
 		String uploadImg = handleFileUpload(req, oldUploadImg);
+		
+		
 
 
 		Event event = new Event();
@@ -103,6 +106,14 @@ public class EventUpdateServlet extends HttpServlet {
 		event.setUploadImg(uploadImg);
 
 		boolean result = e_service.modifyEvent(event);
+		
+		java.sql.Date sqlDate = event.getEventDate();
+        if (sqlDate != null) {
+            Date utilDate = new Date(sqlDate.getTime());
+            req.setAttribute("event_date", utilDate);
+        }
+		
+		System.out.println("문자열2 : "+event.getEventDate());
 
 		if (result) {
 			resp.sendRedirect(req.getContextPath() + "/letsgu/event/eventdetail?eventId=" + eventId);

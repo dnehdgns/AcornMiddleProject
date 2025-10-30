@@ -21,10 +21,12 @@ public class EventListServlet extends HttpServlet {
 
 		// 상태 갱신(마감일, 비추천)
 		e_service.updateEventStatus();
-		
+
 		String categoryParam = req.getParameter("category");
 		String regionParam = req.getParameter("region");
 		String sort = req.getParameter("sort");
+		String keyword = req.getParameter("keyword");
+
 
 		// 요청 파라미터 처리
 		int currentPage = 1;
@@ -35,18 +37,18 @@ public class EventListServlet extends HttpServlet {
 			currentPage = Integer.parseInt(req.getParameter("p"));
 		}
 
-		
 		// 조회 데이터
 		List<String> regionList = e_service.getRegionList();
 		List<Category> categoryList = c_service.getCategoryList();
 		List<Event> eventList;
 
+		eventList = e_service.searchEventByTitle(keyword);
+
 		// 필터 조건별 이벤트 조회
 		if ("popular".equals(sort)) {
-			eventList = e_service.getEventByPopularity();  
+			eventList = e_service.getEventByPopularity();
 			req.setAttribute("isPopular", true);
-		}
-		else {
+		} else {
 			if (isValid(regionParam) && !"전체".equals(regionParam)) { // 지역 선택된 경우
 
 				if (isValid(categoryParam)) {
@@ -77,19 +79,23 @@ public class EventListServlet extends HttpServlet {
 		}
 
 
-		//데이터 심기
+		// 데이터 심기
 		req.setAttribute("regionList", regionList);
 		req.setAttribute("categoryList", categoryList);
 		req.setAttribute("eventList", eventList);
 
-		req.getRequestDispatcher("/WEB-INF/views/event/eventList.jsp").forward(req, resp);
-
+		if (keyword == null) {
+			req.getRequestDispatcher("/WEB-INF/views/event/eventList.jsp").forward(req, resp);
+			return;
+		}else {
+			req.setAttribute("keyword", keyword.trim());
+			req.getRequestDispatcher("/WEB-INF/views/event/eventList.jsp").forward(req, resp);
+		}
 	}
 
 	// 문자열 유효성 검사
 	private boolean isValid(String param) {
 		return param != null && !param.trim().isEmpty();
 	}
-	
-	
+
 }

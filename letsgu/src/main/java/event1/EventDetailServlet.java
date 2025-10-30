@@ -2,7 +2,7 @@ package event1;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -41,6 +41,7 @@ public class EventDetailServlet extends HttpServlet {
 
 
 		req.setAttribute("event", event);
+		
 
 		BookMarkService bookService = new BookMarkService();
 		JoinDAO daoJoin = new JoinDAO();
