@@ -188,6 +188,7 @@ function Joinform__submit(form) {
 
     <div class="form-actions">
     	<input type="hidden" name="eventId" value="${eventId}" />
+    	<input type="hidden" name="region" value="${region}" />
       <button type="button" class="btn btn--line"
               onclick="location.href='${pageContext.request.contextPath}/letsgu/signup'">회원가입</button>
       <button type="submit" class="btn btn--primary">로그인</button>

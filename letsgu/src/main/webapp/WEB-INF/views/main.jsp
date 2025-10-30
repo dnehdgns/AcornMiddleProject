@@ -173,10 +173,11 @@ main {
         <option>대전</option>
         <option>광주</option>
       </select>
-      <form action="${pageContext.request.contextPath}/letsgu/event/list" method="get">
-	      <input type="text" class="keyword" placeholder="검색어를 입력하세요">
-	      <button type="submit">검색</button>
-      </form>
+		<form action="${pageContext.request.contextPath}/letsgu/event/list" method="get">
+		  <input type="hidden" name="region" value="전체">
+		  <input type="text" name="keyword" class="keyword" placeholder="검색어를 입력하세요">
+		  <button type="submit">검색</button>
+		</form>
     </div>
   </div>
   <!-- 메뉴 리스트 -->

@@ -14,6 +14,10 @@ public class HeaderServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
+        req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=UTF-8");
+		
 	       // ✅ 로그인 시점에 세션이 이미 생성되었기 때문에 false 필요 없음
         HttpSession session = req.getSession();
 
@@ -21,7 +25,9 @@ public class HeaderServlet extends HttpServlet {
         Integer userId = (Integer) session.getAttribute("USER_ID");
         String rule = (String) session.getAttribute("RULE");
         String eventId = req.getParameter("eventId");
+        String region = req.getParameter("region");
         req.setAttribute("eventId", eventId);
+        req.setAttribute("region", region);
 
 
         // ✅ 로그인 여부 판별

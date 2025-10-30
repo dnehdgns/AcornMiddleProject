@@ -1,6 +1,8 @@
 package user;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -61,15 +63,19 @@ public class LoginServlet extends HttpServlet {
         session.setMaxInactiveInterval(60 * 30); // 30분 유지
         
     	String checkEvent = request.getParameter("eventId");
-    	System.out.println(checkEvent);
-    	if(checkEvent != null && checkEvent != "") {
+    	String checkRegion = request.getParameter("region");
+    	if (checkEvent != null && !checkEvent.trim().isEmpty()) {
 	    	int eventId = Integer.parseInt(checkEvent);
 	    	if(eventId>0) {
 	    		response.sendRedirect(request.getContextPath() + "/letsgu/event/eventdetail?eventId=" + eventId);
 	    	}else {
 	    		response.sendRedirect(request.getContextPath() + "/letsgu/main");
 	    	}
-    	}else {
+    	}else if (checkRegion != null && !checkRegion.trim().isEmpty()) {
+    		String encodedRegion = URLEncoder.encode(checkRegion, "UTF-8");
+    		response.sendRedirect(request.getContextPath() + "/letsgu/event/list?region=" + encodedRegion);
+    	}
+    	else {
     		response.sendRedirect(request.getContextPath() + "/letsgu/main");
     	}
     }
