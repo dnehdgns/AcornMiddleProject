@@ -19,3 +19,11 @@
   font-weight: 800;
   color :var(--main-orange);
 }
+.mc-empty-link {
+    display: block;
+    font-style: italic;
+    text-align: center;
+    margin: 10rem auto 0;
+    font-size: 1.3rem;
+    font-weight: 400;
+}

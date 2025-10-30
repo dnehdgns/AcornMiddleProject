@@ -22,6 +22,8 @@ public class JoinServlet extends HttpServlet{
 		Users user = getLoginUser(req);
 		req.setAttribute("loginUser", user);
 
+		
+		System.out.println(user);
         // 2. 요청 파라미터 처리
         BufferedReader reader = req.getReader();
         JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();

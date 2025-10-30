@@ -11,7 +11,7 @@ public class UserDAO {
     // 오라클 경로
     String driver = "oracle.jdbc.driver.OracleDriver";
     String url    = "jdbc:oracle:thin:@localhost:1521:testdb";
-    String user   = "project";
+    String user   = "scott";
     String password = "tiger";
 
     // DB 연결

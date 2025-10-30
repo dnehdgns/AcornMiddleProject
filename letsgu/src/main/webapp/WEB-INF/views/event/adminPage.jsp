@@ -5,14 +5,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/adminPage.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/Css/base.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/Css/adminPage.css">
 <title>관리자 페이지</title>
 </head>
 <body>
 
 	<!-- 공통 header -->
-	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	<c:import url="/letsgu/header"/>
 	
 	<!-- content -->
 	<main class = "wrapper">

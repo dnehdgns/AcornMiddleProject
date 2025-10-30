@@ -16,8 +16,8 @@ public class CommentDeleteServlet extends HttpServlet {
 		
 		req.setCharacterEncoding("utf-8");
 		
-		int eventid = Integer.parseInt(req.getParameter("eventid"));
-		int commentId = Integer.parseInt(req.getParameter("commentid"));
+		int eventid = Integer.parseInt(req.getParameter("eventId"));
+		int commentId = Integer.parseInt(req.getParameter("commentId"));
         
         CommentService commentService = new CommentService();
         int result = commentService.removeComment(commentId);

@@ -6,15 +6,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/eventForm.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/Css/base.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/Css/eventForm.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=close" />
 <title>이벤트 수정</title>
 </head>
 <body>
 
 <!-- 공통 header -->
-	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	<c:import url="/letsgu/header"/>
 
 	<!-- content -->
 	<main class="wrapper">

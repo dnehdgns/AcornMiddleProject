@@ -10,14 +10,14 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/eventList.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/Css/base.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/Css/eventList.css">
 <title>이벤트 목록</title>
 </head>
 <body>
 
 	<!-- 공통 header -->
-	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	<c:import url="/letsgu/header"/>
 
 	<main class="wrapper">
 		<!--content-->
