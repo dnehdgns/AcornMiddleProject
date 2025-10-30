@@ -32,6 +32,6 @@ public class MainServlet extends HttpServlet {
         request.setAttribute("RULE", rule);
 
         // ✅ 메인 JSP로 이동
-        request.getRequestDispatcher("/WEB-INF/views/login/main.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/main.jsp").forward(request, response);
     }
 }

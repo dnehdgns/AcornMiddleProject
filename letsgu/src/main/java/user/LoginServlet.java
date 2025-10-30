@@ -20,7 +20,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/views/login/login.jsp").forward(request, response);
+    	request.getRequestDispatcher("/WEB-INF/views/login/login.jsp").forward(request, response);
     }
 
     @Override
@@ -59,8 +59,19 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("USER_ID", user.getUserId());
         session.setAttribute("RULE", user.getRule());
         session.setMaxInactiveInterval(60 * 30); // 30분 유지
-
-        response.sendRedirect(request.getContextPath() + "/letsgu/main");
+        
+    	String checkEvent = request.getParameter("eventId");
+    	System.out.println(checkEvent);
+    	if(checkEvent != null && checkEvent != "") {
+	    	int eventId = Integer.parseInt(checkEvent);
+	    	if(eventId>0) {
+	    		response.sendRedirect(request.getContextPath() + "/letsgu/event/eventdetail?eventId=" + eventId);
+	    	}else {
+	    		response.sendRedirect(request.getContextPath() + "/letsgu/main");
+	    	}
+    	}else {
+    		response.sendRedirect(request.getContextPath() + "/letsgu/main");
+    	}
     }
 
     // 유틸

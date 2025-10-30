@@ -15,7 +15,7 @@
   <link href="<%=request.getContextPath()%>/Css/base.css" rel="stylesheet"/>
   <link href="<%=request.getContextPath()%>/Css/MainCalendar.css" rel="stylesheet"/>
   <link href="<%=request.getContextPath()%>/Css/MyCalendar.css" rel="stylesheet"/>
-
+	<base target="_parent">	
 </head>
 
 <body>

@@ -1,5 +1,3 @@
-<%@page import="event2.Comment"%>
-<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -10,15 +8,15 @@
 <head>
 <link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/eventdetail.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/Css/base.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/Css/eventdetail.css">
 <meta charset="UTF-8">
 <title>이벤트 상세보기</title>
 </head>
 <body>
 
 	<!-- 공통 header -->
-	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	<c:import url="/letsgu/header?eventId=${event.eventId}"/>
 	
 	<main class = "wrapper event-detail-page">
 		<div class="main-title">
@@ -62,12 +60,13 @@
 				<c:if test="${not empty event.eventDate || event.capacity > 0}">
 					<div class="detail-recruit">
 						<c:if test="${not empty event.eventDate}">
-							<p>모집 마감일 : 
+							<p class="recruit-deadline">모집 마감일 : 
 								<fmt:formatDate value="${event.eventDate}" pattern="yyyy-MM-dd"/>
 							</p>
 						</c:if>
 						<c:if test="${event.capacity > 0}">
-							<p>모집 인원 : ${event.capacity}명</p>
+							<p class="recruit-capacity">모집 인원 : ${event.capacity}명</p>
+							<p class="recruit-current">현재 참여 인원 : ${joinCount}명</p>
 						</c:if>
 					</div>
 				</c:if>
@@ -81,29 +80,40 @@
 				<div class="detail-actions">
 
 					<!-- 추천 / 비추천 / 북마크 -->
-					<div class="like-section">
-						<button class="icon-btn like-btn">
+					
+					
+				<c:if test="${LOGIN_ID != null && LOGIN_ID.userId != event.authorId}">
+						<!-- 로그인 안 했거나, 작성자가 아닐 때만 보여줌 -->
+					<div class="like-section">				
+						<!-- 좋아요 버튼 -->
+						<button type="submit" id="likeBtn"
+							class="icon-btn like-btn <c:if test='${liked}'>active</c:if>">
 							<span class="material-symbols-outlined">favorite</span>
-							<span class="like-count">20</span>
+							<span class="like-count">${likeCount}</span>
 						</button>
 					
-						<button class="icon-btn dislike-btn">
+						<!-- 싫어요 버튼 -->
+						<button type="submit" id="dislikeBtn"
+							class="icon-btn dislike-btn <c:if test='${disliked}'>active</c:if>">
 							<span class="material-symbols-outlined">thumb_down</span>
-							<span class="dislike-count">2</span>
+							<span class="dislike-count">${dislikeCount}</span>
 						</button>
 					
-						<button class="icon-btn bookmark-btn">
+						<!-- 북마크 버튼 -->
+						<button type="submit" id="bookmarkBtn"
+							class="icon-btn bookmark-btn <c:if test='${bookmarked}'>active</c:if>">
 							<span class="material-symbols-outlined">bookmark</span>
 						</button>
 					</div>
+				</c:if>
 						
 					<!-- 참여하기 버튼 -->
 					<div class = "right-action-group">
 					<c:if test="${event.categoryId == 2}">
-						<c:if test="${LOGIN_ID == null || LOGIN_ID.userId != event.authorId}">
+						<c:if test="${LOGIN_ID != null && LOGIN_ID.userId != event.authorId}">
 							<!-- 로그인 안 했거나, 작성자가 아닐 때만 보여줌 -->
 							<div class="participate">
-								<form action="${pageContext.request.contextPath}/letsgu/part/joinevent" method="post" class="inline-form">
+								<form action="${pageContext.request.contextPath}/letsgu/event/join" method="post" class="inline-form">
 									<input type="hidden" name="eventId" value="${event.eventId}">
 									<button type="submit" class="join-btn">참여하기</button>
 								</form>
@@ -139,7 +149,7 @@
 				<c:if test="${LOGIN_ID != null}">
 					<form action="${pageContext.request.contextPath}/letsgu/event/commentadd" method="post" class="comment-form">
 						<input type="hidden" name="eventId" value="${event.eventId}">
-						<input type="hidden" name="userId" value="${LOGIN_ID.userId}">
+						<input type="hidden" name="userId" value="${LOGIN_ID.name}">
 						<textarea name="content" class="comment-input" placeholder="댓글을 입력해주세요." required></textarea>
 						<button type="submit" class="comment-submit-btn">등록</button>
 					</form>
@@ -163,7 +173,7 @@
 						<c:forEach var="cmt" items="${commentList}">
 							<div class="comment-item">
 								<div class="comment-header">
-									<span class="comment-writer">${cmt.authorName}</span>
+									<span class="comment-writer">${cmt.userId}</span>
 									<span class="comment-date">
 										<fmt:formatDate value="${cmt.createTime}" pattern="yyyy-MM-dd HH:mm"/>
 									</span>
@@ -173,7 +183,7 @@
 									<p>${cmt.content}</p>
 								</div>
 
-								<c:if test="${LOGIN_ID != null && LOGIN_ID.userId == cmt.userId}">
+								<c:if test="${LOGIN_ID != null && LOGIN_ID.name == cmt.userId}">
 									<form action="${pageContext.request.contextPath}/letsgu/event/commentdel" method="post" class="comment-delete-form">
 										<input type="hidden" name="commentId" value="${cmt.commentId}">
 										<input type="hidden" name="eventId" value="${event.eventId}">
@@ -197,16 +207,18 @@
 
 	<!-- 공통 footer -->
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
-
+	
 </body>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 	  const postId = ${event.eventId};
 	  const contextPath = '${pageContext.request.contextPath}';
+	  const maxCapacity = ${event.capacity};
 
 	  // 공통 fetch 처리 함수
 	  function sendAction(endpoint, action, onSuccess) {
-	    fetch(contextPath+endpoint, {
+		  console.log("check1");
+	    fetch(contextPath + endpoint, {
 	      method: 'POST',
 	      headers: { 'Content-Type': 'application/json' },
 	      credentials: 'include',
@@ -226,36 +238,26 @@ document.addEventListener("DOMContentLoaded", () => {
 	    });
 	  }
 
-	  // 버튼 상태 업데이트 함수
-	  function updateButtonText(button, isActive, activeText, inactiveText) {
-	    button.innerText = isActive ? activeText : inactiveText;
-	  }
-
-	  function updateCount(id, label, count, suffix = "") {
-	    const el = document.getElementById(id);
-	    if (el) el.textContent = label + count + suffix;
-	  }
-
 	  // 참여 버튼
-	  const joinBtn = document.getElementById("joinBtn");
-	  if (joinBtn) {
-	    joinBtn.addEventListener("click", () => {
-	      const isJoined = joinBtn.innerText.includes("취소");
-	      
-	      // 모집 인원과 현재 참여 인원 비교
-	      const joinCountText = document.getElementById("joinCount").textContent;
-	      const currentJoinCount = parseInt(joinCountText.replace(/\D/g, ""), 10); // 숫자만 추출
+	  const joinBtn = document.querySelector(".join-btn");
+	  const joinCountEl = document.querySelector(".recruit-current");
 
-	      const maxCapacity = ${event.capacity}; // JSP에서 렌더링된 값 사용
+	  if (joinBtn && joinCountEl) {
+	    joinBtn.addEventListener("click", (e) => {
+	      e.preventDefault();
+	      const isJoined = joinBtn.classList.contains("active");
+	      const currentJoinCount = parseInt(joinCountEl.textContent.replace(/\D/g, ""), 10);
 
 	      if (!isJoined && currentJoinCount >= maxCapacity) {
 	        alert("모집이 끝났습니다.");
-	        return; // 함수 종료
+	        return;
 	      }
 
 	      sendAction('/letsgu/event/join', isJoined ? 'remove' : 'add', data => {
-	        updateButtonText(joinBtn, !isJoined, "참여 취소", "참여");
-	        updateCount("joinCount", "현재 참여 인원: ", data.joinCount, "명");
+	        joinBtn.classList.toggle("active", !isJoined);
+	        alert(isJoined ? "참여 취소 되었습니다.!" : "참여 완료!");
+	        joinBtn.innerText = isJoined ? "참여하기" : "참여취소";
+	        joinCountEl.textContent = "현재 참여 인원 : "+ data.joinCount +"명";
 	      });
 	    });
 	  }
@@ -264,57 +266,51 @@ document.addEventListener("DOMContentLoaded", () => {
 	  const bookmarkBtn = document.getElementById("bookmarkBtn");
 	  if (bookmarkBtn) {
 	    bookmarkBtn.addEventListener("click", () => {
-	      const isBookmarked = bookmarkBtn.innerText.includes("해제");
-	      sendAction('/letsgu/event/bookmark', isBookmarked ? 'remove' : 'add', () => {
-	        updateButtonText(bookmarkBtn, !isBookmarked, "북마크 해제", "북마크");
-	        alert(isBookmarked ? "북마크가 해제되었습니다!" : "북마크 완료!");
+			const isBookmarked = bookmarkBtn.classList.contains("active");
+			sendAction('/letsgu/event/bookmark', isBookmarked ? 'remove' : 'add', () => {
+				bookmarkBtn.classList.toggle("active", !isBookmarked);
+				alert(isBookmarked ? "북마크가 해제되었습니다!" : "북마크 완료!");
 	      });
 	    });
 	  }
 
-	  // 추천 버튼
+	  // 추천 / 비추천 버튼
 	  const likeBtn = document.getElementById("likeBtn");
 	  const dislikeBtn = document.getElementById("dislikeBtn");
+	  const likeCountEl = document.querySelector(".like-count");
+	  const dislikeCountEl = document.querySelector(".dislike-count");
 
-	  if (likeBtn) {
+	  if (likeBtn && dislikeBtn && likeCountEl && dislikeCountEl) {
 	    likeBtn.addEventListener("click", () => {
-	      const isLiked = likeBtn.innerText.includes("취소");
-	      const isDisliked = dislikeBtn.innerText.includes("취소");
+	      const isLiked = likeBtn.classList.contains("active");
+	      const isDisliked = dislikeBtn.classList.contains("active");
 
 	      sendAction('/letsgu/event/like', isLiked ? 'removelike' : 'like', data => {
-	        updateButtonText(likeBtn, !isLiked, "추천 취소", "추천");
-	        updateCount("likeCount", "추천수: ", data.likeCount);
+	        likeBtn.classList.toggle("active", !isLiked);
+	        likeCountEl.textContent = data.likeCount;
 
-	        // 추천을 눌렀을 때 비추천이 활성화되어 있으면 UI 초기화
 	        if (!isLiked && isDisliked) {
-	          updateButtonText(dislikeBtn, false, "비추천 취소", "비추천");
-	          updateCount("likeCount", "추천수: ", data.likeCount);
-	          updateCount("dislikeCount", "비추천수: ", data.dislikeCount);
+	          dislikeBtn.classList.remove("active");
+	          dislikeCountEl.textContent = data.dislikeCount;
 	        }
 	      });
 	    });
-	  }
 
-	  // 비추천 버튼
-	  if (dislikeBtn) {
 	    dislikeBtn.addEventListener("click", () => {
-	      const isDisliked = dislikeBtn.innerText.includes("취소");
-	      const isLiked = likeBtn.innerText.includes("취소");
+	      const isDisliked = dislikeBtn.classList.contains("active");
+	      const isLiked = likeBtn.classList.contains("active");
 
 	      sendAction('/letsgu/event/like', isDisliked ? 'removedislike' : 'dislike', data => {
-	        updateButtonText(dislikeBtn, !isDisliked, "비추천 취소", "비추천");
-	        updateCount("dislikeCount", "비추천수: ", data.dislikeCount);
+	        dislikeBtn.classList.toggle("active", !isDisliked);
+	        dislikeCountEl.textContent = data.dislikeCount;
 
-	        // 비추천을 눌렀을 때 추천이 활성화되어 있으면 UI 초기화
 	        if (!isDisliked && isLiked) {
-	          updateButtonText(likeBtn, false, "추천 취소", "추천");
-	          updateCount("likeCount", "추천수: ", data.likeCount);
-	          updateCount("dislikeCount", "비추천수: ", data.dislikeCount);
+	          likeBtn.classList.remove("active");
+	          likeCountEl.textContent = data.likeCount;
 	        }
 	      });
 	    });
 	  }
-
 	});
 </script>
 </html>

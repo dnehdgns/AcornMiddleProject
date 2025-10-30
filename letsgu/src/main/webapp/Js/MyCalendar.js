@@ -144,7 +144,10 @@
           </ul>
         `;
       } else {
-        bodyHTML = `<p class="mc-empty">등록된 이벤트가 없습니다.</p>`;
+		bodyHTML = `
+		  <p class="mc-empty">등록된 이벤트가 없습니다.</p>
+		  <a class="mc-empty-link" href="/letsgu/letsgu/event/list">이벤트 리스트로 이동하기</a>
+		`;
       }
 
     } catch (err) {

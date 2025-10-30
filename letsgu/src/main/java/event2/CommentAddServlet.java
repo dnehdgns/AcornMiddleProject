@@ -18,8 +18,8 @@ public class CommentAddServlet extends HttpServlet {
 		req.setCharacterEncoding("utf-8");
 		
 		
-		int eventid = Integer.parseInt(req.getParameter("eventid"));
-		String userid = req.getParameter("userid");
+		int eventid = Integer.parseInt(req.getParameter("eventId"));
+		String userid = req.getParameter("userId");
 		String content = req.getParameter("content");
 		
         Comment comment = new Comment();
