@@ -123,22 +123,22 @@
 	          const status = String(it.status ?? '').toUpperCase();
 	          const statusClass = (status === 'ACTIVE') ? 'active' : 'inactive';
 	          return `
-	            <li class="mc-list-item ${statusClass}">
-	              <a class="mc-link" href="${href}">
-	                <div class="mc-list-title">${title}</div>
-	                <div class="mc-list-sub-1">
-	                  <div class="mc-list-sub">${eventDate}</div>
-	                  <div class="mc-list-sub">${region}</div>
-	                </div>
-	                <div class="mc-list-sub-2">
-	                  <div class="mc-list-sub">${desc || '내용 없음'}</div>
-	                </div>
-	                <div class="mc-list-sub-3">
-	                  ${capacity !== '' ? `<div class="mc-list-sub">모집 인원: ${capacity}명</div>` : ''}
-	                  <div class="mc-list-sub status-label ${statusClass}">${status}</div>
-	                </div>
-	              </a>
-	            </li>
+			  <li class="mc-list-item ${statusClass}"">
+			        <a class="mc-link" href="${href}">
+			          <div class="mc-list-title">${title}</div>
+			  		<div class="mc-list-sub-1">
+			          	<div class="mc-list-sub"> ${eventDate}</div>
+			          	<div class="mc-list-sub"> ${region}</div>
+			  		</div>
+			  		<div class="mc-list-sub-2">
+			  			<div class="mc-list-sub"> ${desc || '내용 없음'}</div>
+			  		</div>
+			  		<div class="mc-list-sub-3">
+			          	<div class="mc-list-sub"> 모집 인원: ${capacity}명</div>
+			  		</div>
+			  		<div class="mc-list-status status-label ${statusClass}"> ${status}</div>
+			        </a>
+			      </li>
 	          `;
 	        }).join('')}
 	      </ul>

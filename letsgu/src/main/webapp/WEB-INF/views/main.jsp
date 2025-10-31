@@ -133,6 +133,7 @@ main {
   border-radius: var(--radius-3);
   box-shadow: var(--shadow-md);
   transition: transform 0.08s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  cursor : pointer;
 }
 .menu:hover {
   border-color: var(--main-orange);
@@ -192,7 +193,7 @@ main {
 			<button class="menu"
 				onclick="location.href='${pageContext.request.contextPath}/letsgu/event/list?region=마포구'">마포구</button>
 			<button class="menu"
-				onclick="location.href='${pageContext.request.contextPath}/letsgu/event/list?region=송파구">송파구</button>
+				onclick="location.href='${pageContext.request.contextPath}/letsgu/event/list?region=송파구'">송파구</button>
 			<button class="menu"
 				onclick="location.href='${pageContext.request.contextPath}/letsgu/event/list?region=용산구'">용산구</button>
 		</div>
