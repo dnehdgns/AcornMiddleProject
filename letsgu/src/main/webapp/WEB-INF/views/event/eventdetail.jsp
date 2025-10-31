@@ -60,7 +60,7 @@
 				<c:if test="${not empty event.eventDate || event.capacity > 0}">
 					<div class="detail-recruit">
 						<c:if test="${not empty event.eventDate}">
-							<p class="recruit-deadline">모집 마감일 : 
+							<p class="recruit-deadline">마감일 : 
 								<fmt:formatDate value="${event.eventDate}" pattern="yyyy-MM-dd"/>
 							</p>
 						</c:if>

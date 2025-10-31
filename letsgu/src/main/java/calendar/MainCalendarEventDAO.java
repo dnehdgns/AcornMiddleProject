@@ -55,35 +55,29 @@ public class MainCalendarEventDAO {
         String sql =
             "SELECT e.*, c.category_name " +
             "FROM event e " +
-            "JOIN category c ON e.category_id = c.category_id " +
+            "LEFT JOIN category c ON e.category_id = c.category_id " +  // ★ 변경
             "WHERE TO_CHAR(e.event_date, 'YYYY-MM-DD') = ? " +
             "ORDER BY e.created_at DESC";
-
         List<Event> list = new ArrayList<>();
-        
         try (Connection con = dbcon();
-             PreparedStatement ps = con.prepareStatement(sql)){
-
-        	ps.setString(1, ymd);
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, ymd);
             
-        	try (ResultSet rs = ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                	
                     Event ev = new Event();
-                    
                     ev.setEventId(rs.getInt("event_id"));
                     ev.setAuthorId(rs.getInt("author_id"));
                     ev.setCategoryId(rs.getInt("category_id"));
                     ev.setTitle(rs.getString("title"));
                     ev.setRegion(rs.getString("region"));
-                    ev.setEventDate(rs.getDate("event_date"));
-                    ev.setCapacity(rs.getInt("capacity"));
+                    ev.setEventDate(rs.getDate("event_date"));           
+                    ev.setCapacity(rs.getInt("capacity"));                 
                     ev.setDescription(rs.getString("description"));
                     ev.setStatus(rs.getString("status"));
                     ev.setCreatedAt(rs.getDate("created_at"));
                     ev.setUploadImg(rs.getString("upload_img"));
                     ev.setCategoryName(rs.getString("category_name"));
-                  
                     list.add(ev);
                 }
             }

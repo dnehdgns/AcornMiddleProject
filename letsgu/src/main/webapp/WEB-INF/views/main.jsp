@@ -95,7 +95,11 @@ main {
   box-sizing: border-box;
 }
 .search select { padding: 0 10px; }
-.search input { width: 260px; padding: 0 12px; }
+.search input { 
+	width: 350px; 
+	padding: 0 12px; 
+	margin-right: 20px;
+}
 .search button {
   padding: 0 16px;
   background-color: var(--main-orange);
@@ -104,7 +108,9 @@ main {
   cursor: pointer;
   border-radius: 999px;
 }
-.search button:hover { filter: brightness(0.96); }
+.search button:hover { 
+	filter: brightness(0.96);
+}
 /* 메뉴 리스트 */
 .menuListSection { margin-top: 28px; }
 .MenuList {
@@ -144,6 +150,7 @@ main {
   .search { flex-direction: column; align-items: stretch; }
   .search input { width: 100%; }
 }
+
 </style>
 </head>
 <body>
@@ -166,13 +173,6 @@ main {
   <!-- 검색 영역 -->
   <div class="search-wrap">
     <div class="search">
-      <select name="region">
-        <option value="">지역 선택</option>
-        <option>서울</option>
-        <option>부산</option>
-        <option>대전</option>
-        <option>광주</option>
-      </select>
 		<form action="${pageContext.request.contextPath}/letsgu/event/list" method="get">
 		  <input type="hidden" name="region" value="전체">
 		  <input type="text" name="keyword" class="keyword" placeholder="검색어를 입력하세요">

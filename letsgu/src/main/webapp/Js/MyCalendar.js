@@ -108,41 +108,41 @@
       const json = await res.json();
       const items = json.items || [];
 
-      if (items.length) {
-        const detailBase = cfg.eventDetailUrl || '/event/detail';
-        bodyHTML = `
-          <ul class="mc-list">
-            ${items.map(it => {
-              const id = it.eventId;
-              const href = id != null ? `${detailBase}?eventId=${encodeURIComponent(id)}` : '#';
-              const title = esc(it.title ?? '제목 없음');
-              const region = esc(it.region ?? '');
-              const eventDate = esc(it.eventDate ?? '');
-              const capacity = it.capacity ?? '';
-              const desc = esc(it.description ?? '');
-              const status = String(it.status ?? '').toUpperCase();
-              const statusClass = (status === 'ACTIVE') ? 'active' : 'inactive';
-              return `
-                <li class="mc-list-item ${statusClass}">
-                  <a class="mc-link" href="${href}">
-                    <div class="mc-list-title">${title}</div>
-                    <div class="mc-list-sub-1">
-                      <div class="mc-list-sub">${eventDate}</div>
-                      <div class="mc-list-sub">${region}</div>
-                    </div>
-                    <div class="mc-list-sub-2">
-                      <div class="mc-list-sub">${desc || '내용 없음'}</div>
-                    </div>
-                    <div class="mc-list-sub-3">
-                      <div class="mc-list-sub">모집 인원: ${capacity}명</div>
-                      <div class="mc-list-sub status-label ${statusClass}">${status}</div>
-                    </div>
-                  </a>
-                </li>
-              `;
-            }).join('')}
-          </ul>
-        `;
+	  if (items.length) {
+	    const detailBase = cfg.eventDetailUrl || '/event/detail';
+	    bodyHTML = `
+	      <ul class="mc-list">
+	        ${items.map(it => {
+	          const id = it.eventId;
+	          const href = id != null ? `${detailBase}?eventId=${encodeURIComponent(id)}` : '#';
+	          const title = esc(it.title ?? '제목 없음');
+	          const region = esc(it.region ?? '');
+	          const eventDate = esc(it.eventDate ?? '');
+	          const capacity = it.capacity ?? '';
+	          const desc = esc(it.description ?? '');
+	          const status = String(it.status ?? '').toUpperCase();
+	          const statusClass = (status === 'ACTIVE') ? 'active' : 'inactive';
+	          return `
+	            <li class="mc-list-item ${statusClass}">
+	              <a class="mc-link" href="${href}">
+	                <div class="mc-list-title">${title}</div>
+	                <div class="mc-list-sub-1">
+	                  <div class="mc-list-sub">${eventDate}</div>
+	                  <div class="mc-list-sub">${region}</div>
+	                </div>
+	                <div class="mc-list-sub-2">
+	                  <div class="mc-list-sub">${desc || '내용 없음'}</div>
+	                </div>
+	                <div class="mc-list-sub-3">
+	                  ${capacity !== '' ? `<div class="mc-list-sub">모집 인원: ${capacity}명</div>` : ''}
+	                  <div class="mc-list-sub status-label ${statusClass}">${status}</div>
+	                </div>
+	              </a>
+	            </li>
+	          `;
+	        }).join('')}
+	      </ul>
+	    `;
       } else {
 		bodyHTML = `
 		  <p class="mc-empty">등록된 이벤트가 없습니다.</p>

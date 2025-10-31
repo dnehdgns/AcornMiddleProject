@@ -74,18 +74,18 @@
 				</div>
 
 				<!-- 카테고리가 2번일 때만 표시 -->
-				<c:if test="${selectedCategory == 2}">
 					<div class="form-row">
 						<div class="form-group">
-							<label>모집날짜</label>
+							<label>마감일자</label>
 							<input type="date" name="event_date">
 						</div>
-						<div class="form-group">
-							<label>모집인원</label>
-							<input type="number" name="capacity" min="1" max="100" placeholder="0 명">
-						</div>
+						<c:if test="${selectedCategory == 2}">
+								<div class="form-group">
+									<label>모집인원</label>
+									<input type="number" name="capacity" min="1" max="100" placeholder="0 명">
+								</div>
+						</c:if>
 					</div>
-				</c:if>
 
 				<!-- 이미지 업로드 -->
 				<div class="form-group">
