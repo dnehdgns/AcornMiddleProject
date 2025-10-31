@@ -27,6 +27,10 @@ public class CommentAddServlet extends HttpServlet {
         comment.setUserId(userid);
         comment.setContent(content);
         
+        System.out.println(comment.getUserId());
+        System.out.println(comment.getEventId());
+        System.out.println(comment.getContent());
+        
         CommentService commentService = new CommentService();
         int result = commentService.insertComment(comment);
         
