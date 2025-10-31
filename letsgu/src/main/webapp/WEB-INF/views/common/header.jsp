@@ -51,7 +51,7 @@
       <c:choose>
         <c:when test="${RULE eq 'ADMIN'}">
           <button class="site-header__btn site-header__btn--primary"
-                  onclick="location.href='${pageContext.request.contextPath}/admin/dashboard'">관리자 페이지</button>
+                  onclick="location.href='${pageContext.request.contextPath}/letsgu/admin/list'">관리자 페이지</button>
           <button class="site-header__btn site-header__btn--line">회원 관리</button>
         </c:when>
         <c:when test="${RULE eq 'USER'}">
