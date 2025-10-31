@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 
 import user.Users;
 
@@ -37,7 +38,10 @@ public class BookMarkServlet extends HttpServlet {
 
         // 2. 요청 파라미터 처리
         BufferedReader reader = req.getReader();
-        JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
+        JsonReader jsonReader = new JsonReader(reader);
+        jsonReader.setLenient(true); 
+        JsonObject json = JsonParser.parseReader(jsonReader).getAsJsonObject();
+
         int eventId = json.get("postId").getAsInt();
         String action = json.get("action").getAsString();
 
