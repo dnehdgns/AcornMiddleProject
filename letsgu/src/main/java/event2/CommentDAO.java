@@ -62,7 +62,7 @@ public class CommentDAO {
 	
 	public int AddComment(Comment comment) {
 		Connection con = dbcon();
-		String sql = "insert into comments(EVENT_ID,USER_ID,USER_TEXT) values(?,?,?)";
+		String sql = "insert into comments(COMMENT_ID, EVENT_ID,USER_ID,USER_TEXT) values(comment_seq.NEXTVAL,?,?,?)";
 		PreparedStatement pst = null;
 		int result = 0;
 		
