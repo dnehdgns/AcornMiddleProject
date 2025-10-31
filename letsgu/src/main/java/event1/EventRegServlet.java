@@ -39,7 +39,7 @@ public class EventRegServlet extends HttpServlet {
 		}
 
 		List<Category> categoryList = c_service.getCategoryList();
-		List<String> regionList = Arrays.asList("강남구", "마포구", "서초구", "종로구", "용산구", "은평구"); // 임시 (나중에 지역 결정)
+		List<String> regionList = Arrays.asList("강남구", "서초구", "마포구", "송파구", "용산구"); // 임시 (나중에 지역 결정)
 
 
 		req.setAttribute("categoryList", categoryList);
@@ -100,7 +100,7 @@ public class EventRegServlet extends HttpServlet {
 		} else {
 			System.out.println("[이벤트 등록 실패]");
 			req.setAttribute("categoryList", c_service.getCategoryList());
-			req.setAttribute("regionList", Arrays.asList("강남구", "마포구", "서초구", "종로구", "용산구", "은평구"));   //지역 임시 설정
+			req.setAttribute("regionList", Arrays.asList("강남구", "서초구", "마포구", "송파구", "용산구"));   //지역 임시 설정
 
 			req.getRequestDispatcher("/WEB-INF/views/event/eventReg.jsp").forward(req, resp);
 		}

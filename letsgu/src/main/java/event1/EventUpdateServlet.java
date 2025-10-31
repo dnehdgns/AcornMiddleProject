@@ -81,13 +81,19 @@ public class EventUpdateServlet extends HttpServlet {
 		String title = req.getParameter("title");
 		String region = req.getParameter("region");
 		String eventDateStr = req.getParameter("event_date");
-		int capacity = Integer.parseInt(req.getParameter("capacity"));
+		String capacityStr = req.getParameter("capacity");
 		String description = req.getParameter("description");
 		String oldUploadImg = req.getParameter("oldUploadImg");
 		
 		System.out.println("문자열 : "+ eventDateStr);
 		Date eventDate = (isValid(eventDateStr)) ? Date.valueOf(eventDateStr) : null;
 		System.out.println("문자열1 : "+eventDate);
+		
+		int capacity = 0;
+		if (isValid(capacityStr)) {
+		    capacity = Integer.parseInt(capacityStr);
+		}
+		
 		//파일 업로드
 		String uploadImg = handleFileUpload(req, oldUploadImg);
 		
