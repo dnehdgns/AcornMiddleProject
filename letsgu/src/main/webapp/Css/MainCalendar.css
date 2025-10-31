@@ -193,8 +193,20 @@ fc .fc-daygrid-day-number {
   font-weight: 500;
 }
 .status-label.active {
-  background: #4caf50;
-} 
+  background: #4CAF50;
+  margin-bottom: 5rem;
+}
+.mc-list-item.active {
+	
+  border-left: 0.4rem solid #4CAF50;
+  background: #F6FFF6;
+  color: #2E7D32;
+}
+.status-label.inactive {
+  color: #111111;
+  background: #9E9E9E;
+  margin-bottom: 5rem;
+}
 .mc-list-item.active {
   border-left: 0.4rem solid #4caf50;  
   background: #f6fff6;            

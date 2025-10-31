@@ -79,19 +79,18 @@
 					</div>
 
 					<!-- 카테고리가 2번일 때만 표시 -->
-					<c:if test="${selectedCategory == 2}">
-						<div class="form-row">
-							<div class="form-group">
-								<label>모집날짜</label>
-								<input type="date" name="event_date" 
-									value="<fmt:formatDate value='${event.eventDate}' pattern='yyyy-MM-dd'/>">
-							</div>
-							<div class="form-group">
-								<label>모집인원</label>
-								<input type="number" name="capacity" value="${event.capacity}" min="1" max="100">
-							</div>
+					<div class="form-row">
+						<div class="form-group">
+							<label>마감일자</label>
+							<input type="date" name="event_date">
 						</div>
-					</c:if>
+						<c:if test="${selectedCategory == 2}">
+								<div class="form-group">
+									<label>모집인원</label>
+									<input type="number" name="capacity" min="1" max="100" placeholder="0 명">
+								</div>
+						</c:if>
+					</div>
 
 					<!-- 기존 이미지 -->
 					<div class="form-group">
