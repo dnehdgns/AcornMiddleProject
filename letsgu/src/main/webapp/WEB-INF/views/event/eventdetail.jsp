@@ -85,33 +85,33 @@
 			        <c:if test="${LOGIN_ID != null && LOGIN_ID.userId != event.authorId}">
 			            <div class="like-section">
 			                <!-- 좋아요 버튼 -->
-			                <form action="${pageContext.request.contextPath}/letsgu/event/like" method="post" class="inline-form">
+			                
 			                    <input type="hidden" name="eventId" value="${event.eventId}">
 			                    <button type="submit" id="likeBtn"
 			                            class="icon-btn like-btn ${liked ? 'active' : ''}">
 			                        <span class="material-symbols-outlined">favorite</span>
 			                        <span class="like-count">${likeCount}</span>
 			                    </button>
-			                </form>
+			                
 			
 			                <!-- 싫어요 버튼 -->
-			                <form action="${pageContext.request.contextPath}/letsgu/event/dislike" method="post" class="inline-form">
+			                
 			                    <input type="hidden" name="eventId" value="${event.eventId}">
 			                    <button type="submit" id="dislikeBtn"
 			                            class="icon-btn dislike-btn ${disliked ? 'active' : ''}">
 			                        <span class="material-symbols-outlined">thumb_down</span>
 			                        <span class="dislike-count">${dislikeCount}</span>
 			                    </button>
-			                </form>
+			                
 			
 			                <!-- 북마크 버튼 -->
-			                <form action="${pageContext.request.contextPath}/letsgu/event/bookmark" method="post" class="inline-form">
+			                
 			                    <input type="hidden" name="eventId" value="${event.eventId}">
 			                    <button type="submit" id="bookmarkBtn"
 			                            class="icon-btn bookmark-btn ${bookmarked ? 'active' : ''}">
 			                        <span class="material-symbols-outlined">bookmark</span>
 			                    </button>
-			                </form>
+			                
 			            </div>
 			        </c:if>
 			
