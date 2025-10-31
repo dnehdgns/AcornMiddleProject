@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -80,8 +81,11 @@ public class EventRegServlet extends HttpServlet {
 
 		Date eventDate = null;
 		if (isValid(eventDateStr)) {
-			eventDate = Date.valueOf(eventDateStr);
+		    eventDate = Date.valueOf(eventDateStr);
+		} else {
+		    eventDate = Date.valueOf(LocalDate.now());
 		}
+
 
 		int capacity = 0;
 		if (isValid(capacityStr)) {

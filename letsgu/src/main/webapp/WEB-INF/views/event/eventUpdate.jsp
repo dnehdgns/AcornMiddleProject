@@ -81,8 +81,9 @@
 					<!-- 카테고리가 2번일 때만 표시 -->
 					<div class="form-row">
 						<div class="form-group">
-							<label>마감일자</label>
-							<input type="date" name="event_date">
+						    <label>마감일자</label>
+						    <input type="date" name="event_date"
+						           value="<fmt:formatDate value='${event.eventDate}' pattern='yyyy-MM-dd' />">
 						</div>
 						<c:if test="${selectedCategory == 2}">
 								<div class="form-group">
