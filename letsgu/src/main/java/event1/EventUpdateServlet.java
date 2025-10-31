@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -86,7 +87,7 @@ public class EventUpdateServlet extends HttpServlet {
 		String oldUploadImg = req.getParameter("oldUploadImg");
 		
 		System.out.println("문자열 : "+ eventDateStr);
-		Date eventDate = (isValid(eventDateStr)) ? Date.valueOf(eventDateStr) : null;
+		Date eventDate = (isValid(eventDateStr)) ? Date.valueOf(eventDateStr) : Date.valueOf(LocalDate.now());;
 		System.out.println("문자열1 : "+eventDate);
 		
 		int capacity = 0;
