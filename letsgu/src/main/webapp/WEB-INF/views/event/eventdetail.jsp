@@ -77,73 +77,78 @@
 				</div>
 		
 				<!-- 액션영역 ( 추천/비추천, 참여버튼, 북마크) -->
-				<div class="detail-actions">
-
-					<!-- 추천 / 비추천 / 북마크 -->
-					
-					
-				<c:if test="${LOGIN_ID != null && LOGIN_ID.userId != event.authorId}">
-						<!-- 로그인 안 했거나, 작성자가 아닐 때만 보여줌 -->
-					<div class="like-section">				
-						<!-- 좋아요 버튼 -->
-						<button type="submit" id="likeBtn"
-							class="icon-btn like-btn <c:if test='${liked}'>active</c:if>">
-							<span class="material-symbols-outlined">favorite</span>
-							<span class="like-count">${likeCount}</span>
-						</button>
-					
-						<!-- 싫어요 버튼 -->
-						<button type="submit" id="dislikeBtn"
-							class="icon-btn dislike-btn <c:if test='${disliked}'>active</c:if>">
-							<span class="material-symbols-outlined">thumb_down</span>
-							<span class="dislike-count">${dislikeCount}</span>
-						</button>
-					
-						<!-- 북마크 버튼 -->
-						<button type="submit" id="bookmarkBtn"
-							class="icon-btn bookmark-btn <c:if test='${bookmarked}'>active</c:if>">
-							<span class="material-symbols-outlined">bookmark</span>
-						</button>
-					</div>
-				</c:if>
-						
-					<!-- 참여하기 버튼 -->
-					<div class = "right-action-group">
-					<c:if test="${event.categoryId == 2}">
-						<c:if test="${LOGIN_ID != null && LOGIN_ID.userId != event.authorId}">
-							<!-- 로그인 안 했거나, 작성자가 아닐 때만 보여줌 -->
-							<div class="participate">
-								<form action="${pageContext.request.contextPath}/letsgu/event/join" method="post" class="inline-form">
-									<input type="hidden" name="eventId" value="${event.eventId}">
-									<button type="submit" class="join-btn <c:if test='${joined}'>active</c:if>">
-								      <c:choose>
-								        <c:when test="${joined}">참여취소</c:when>
-								        <c:otherwise>참여하기</c:otherwise>
-								      </c:choose>
-									</button>
-								</form>
-							</div>
-						</c:if>
-					</c:if>
-
-					<!-- 수정 / 삭제 : 작성자 본인만 -->
-					<c:if test="${LOGIN_ID != null && LOGIN_ID.userId == event.authorId}">
-						<div class="edit-actions">
-							<a href="${pageContext.request.contextPath}/letsgu/event/update?eventId=${event.eventId}" 
-							   class="edit-btn">수정</a>
-
-							<form action="${pageContext.request.contextPath}/letsgu/event/delete" 
-								  method="post" 
-								  class="inline-form"
-								  onsubmit="return confirm('정말 삭제하시겠습니까?');">
-								<input type="hidden" name="eventId" value="${event.eventId}">
-								<button type="submit" class="delete-btn">삭제</button>
-							</form>
-						</div>
-					</c:if>
-				 </div>
-				</div>
-			</div>
+				
+			<c:if test="${event.status != 'INACTIVE'}">
+			    <div class="detail-actions">
+			
+			        <!-- 추천 / 비추천 / 북마크 -->
+			        <c:if test="${LOGIN_ID != null && LOGIN_ID.userId != event.authorId}">
+			            <div class="like-section">
+			                <!-- 좋아요 버튼 -->
+			                <form action="${pageContext.request.contextPath}/letsgu/event/like" method="post" class="inline-form">
+			                    <input type="hidden" name="eventId" value="${event.eventId}">
+			                    <button type="submit" id="likeBtn"
+			                            class="icon-btn like-btn ${liked ? 'active' : ''}">
+			                        <span class="material-symbols-outlined">favorite</span>
+			                        <span class="like-count">${likeCount}</span>
+			                    </button>
+			                </form>
+			
+			                <!-- 싫어요 버튼 -->
+			                <form action="${pageContext.request.contextPath}/letsgu/event/dislike" method="post" class="inline-form">
+			                    <input type="hidden" name="eventId" value="${event.eventId}">
+			                    <button type="submit" id="dislikeBtn"
+			                            class="icon-btn dislike-btn ${disliked ? 'active' : ''}">
+			                        <span class="material-symbols-outlined">thumb_down</span>
+			                        <span class="dislike-count">${dislikeCount}</span>
+			                    </button>
+			                </form>
+			
+			                <!-- 북마크 버튼 -->
+			                <form action="${pageContext.request.contextPath}/letsgu/event/bookmark" method="post" class="inline-form">
+			                    <input type="hidden" name="eventId" value="${event.eventId}">
+			                    <button type="submit" id="bookmarkBtn"
+			                            class="icon-btn bookmark-btn ${bookmarked ? 'active' : ''}">
+			                        <span class="material-symbols-outlined">bookmark</span>
+			                    </button>
+			                </form>
+			            </div>
+			        </c:if>
+			
+			        <!-- 참여하기 버튼 -->
+			        <div class="right-action-group">
+			            <c:if test="${event.categoryId == 2 && LOGIN_ID != null && LOGIN_ID.userId != event.authorId}">
+			                <div class="participate">
+			                    <form action="${pageContext.request.contextPath}/letsgu/event/join" method="post" class="inline-form">
+			                        <input type="hidden" name="eventId" value="${event.eventId}">
+			                        <button type="submit" class="join-btn ${joined ? 'active' : ''}">
+			                            <c:choose>
+			                                <c:when test="${joined}">참여취소</c:when>
+			                                <c:otherwise>참여하기</c:otherwise>
+			                            </c:choose>
+			                        </button>
+			                    </form>
+			                </div>
+			            </c:if>
+			
+			            <!-- 수정 / 삭제 : 작성자 본인만 -->
+			            <c:if test="${LOGIN_ID != null && LOGIN_ID.userId == event.authorId}">
+			                <div class="edit-actions">
+			                    <a href="${pageContext.request.contextPath}/letsgu/event/update?eventId=${event.eventId}"
+			                       class="edit-btn">수정</a>
+			
+			                    <form action="${pageContext.request.contextPath}/letsgu/event/delete"
+			                          method="post"
+			                          class="inline-form"
+			                          onsubmit="return confirm('정말 삭제하시겠습니까?');">
+			                        <input type="hidden" name="eventId" value="${event.eventId}">
+			                        <button type="submit" class="delete-btn">삭제</button>
+			                    </form>
+			                </div>
+			            </c:if>
+			        </div>
+			    </div>
+			</c:if>
 		</section>
 				
 		<!-- 댓글 영역  시작-->
@@ -151,7 +156,7 @@
 			<h3 class="comment-title">댓글</h3>
 				<!-- 댓글 내용 추가 -->
 				<!-- 댓글 작성 부분 -->
-				<c:if test="${LOGIN_ID != null}">
+				<c:if test="${LOGIN_ID != null && event.status != 'INACTIVE' }">
 					<form action="${pageContext.request.contextPath}/letsgu/event/commentadd" method="post" class="comment-form">
 						<input type="hidden" name="eventId" value="${event.eventId}">
 						<input type="hidden" name="userId" value="${LOGIN_ID.name}">
@@ -162,7 +167,7 @@
 				
 				<c:if test="${LOGIN_ID == null}">
 					<div class="comment-login-required">
-						<a href="${pageContext.request.contextPath}/letsgu/login">로그인 후 댓글을 작성할 수 있어요.</a>
+						<a href="${pageContext.request.contextPath}/letsgu/login?eventId=${event.eventId}">로그인 후 댓글을 작성할 수 있어요.</a>
 					</div>
 				</c:if>
 				

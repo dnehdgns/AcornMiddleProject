@@ -304,7 +304,7 @@ public class EventDAO {
 	public int countAll() {
 		Connection con = dbcon();
 
-		String sql = "select count(*) from event";
+		String sql = "select count(*) from event WHERE status = 'ACTIVE'";
 
 		PreparedStatement pst = null;
 		ResultSet rs = null;
