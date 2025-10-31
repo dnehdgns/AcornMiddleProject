@@ -135,6 +135,9 @@
 .detail-recruit p:first-child::before {
 	content: "event"; 
 }
+.recruit-capacity::before {
+	content: "group";
+}
 
 .detail-recruit p:last-child::before {
 	content: "group";
@@ -148,7 +151,9 @@
 	line-height: 1.6;
 	font-size: 1.5rem;
 	color: var(--text-main);
+	white-space: pre-line;
 }
+
 
 /*추천, 비추천, 북마크*/
 .like-section {
